@@ -9,8 +9,17 @@ export async function createClient() {
     {
       cookies: {
         getAll: () => store.getAll(),
-        setAll: (list) => list.forEach(({ name, value, options }) =>
-          store.set(name, value, options)),
+        setAll: (list) => {
+          // setAll is a no-op in Server Components (cookies() is read-only there);
+          // the middleware/proxy refreshes the session, so swallowing this is safe.
+          // Required by @supabase/ssr — without it a token refresh during an RSC
+          // render throws and tears down the stream (EPIPE), wedging the dev server.
+          try {
+            list.forEach(({ name, value, options }) => store.set(name, value, options))
+          } catch {
+            // called from a Server Component render — ignore
+          }
+        },
       },
     }
   )
