@@ -1,6 +1,7 @@
 'use server'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { isValidStatus } from '@/lib/tags'
 
 export async function createProject(formData: FormData) {
   const supabase = await createClient()
@@ -13,4 +14,12 @@ export async function createProject(formData: FormData) {
   })
   if (error) throw new Error(error.message)
   revalidatePath('/')
+}
+
+export async function setStatus(tagId: string, status: string) {
+  if (!isValidStatus(status)) throw new Error('bad status')
+  const supabase = await createClient()
+  const { error } = await supabase.from('tags').update({ status }).eq('id', tagId)
+  if (error) throw new Error(error.message)
+  revalidatePath('/projects', 'layout')
 }
