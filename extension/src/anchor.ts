@@ -1,4 +1,4 @@
-export type Anchor = { selector: string; text: string | null; nthOfType: number | null }
+export type Anchor = { selector: string; text: string | null; nthOfType: number | null; tagName: string }
 
 function cssPath(el: Element): string {
   const parts: string[] = []
@@ -25,6 +25,7 @@ export function generateAnchor(el: Element): Anchor {
     selector: cssPath(el),
     text: el.textContent?.trim() || null,
     nthOfType: nth,
+    tagName: el.tagName.toLowerCase(),
   }
 }
 
@@ -32,8 +33,9 @@ export function findElement(a: Anchor, root: ParentNode = document): Element | n
   const bySelector = safeQuery(root, a.selector)
   if (bySelector) return bySelector
   if (a.text) {
+    // ponytail: returns first DOM-order match when multiple elements share text+tag
     const match = [...root.querySelectorAll('*')].find(
-      e => e.children.length === 0 && e.textContent?.trim() === a.text
+      e => e.children.length === 0 && e.textContent?.trim() === a.text && e.tagName.toLowerCase() === a.tagName
     )
     if (match) return match
   }
