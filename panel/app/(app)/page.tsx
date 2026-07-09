@@ -19,11 +19,15 @@ export default async function Projects() {
       <ul className="flex flex-col gap-2">
         {projects?.map((p) => (
           <li key={p.id} className="border p-3 rounded flex justify-between">
-            <Link href={`/projects/${p.id}`} className="font-medium underline">{p.name}</Link>
+            <div>
+              <Link href={`/projects/${p.id}`} className="font-medium underline">{p.name}</Link>
+              <span className="block text-sm text-gray-500">{p.site_url}</span>
+            </div>
             <code className="text-sm text-gray-500">key: {p.project_key}</code>
           </li>
         ))}
       </ul>
+      {!projects?.length && <p className="text-gray-500">No projects yet.</p>}
     </div>
   )
 }
