@@ -1,0 +1,6 @@
+.qa-toolbar { position: fixed; bottom: 16px; right: 16px; z-index: 2147483647; }
+.qa-toolbar-btn { background: #111; color: #fff; border: 0; padding: 8px 12px;
+  border-radius: 6px; cursor: pointer; font: 13px sans-serif; }
+.qa-pin { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px;
+  background: #e11; border: 2px solid #fff; border-radius: 50%;
+  z-index: 2147483646; pointer-events: none; }
