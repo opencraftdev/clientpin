@@ -4,12 +4,18 @@ import './overlay.css'
 
 type Row = { id: string; anchor: Anchor; comment: string }
 
+let armed = false
+
 async function loadPins() {
   const key = await getKey()
   if (!key) return
-  const { data } = await sb.rpc('get_tags', {
+  const { data, error } = await sb.rpc('get_tags', {
     p_project_key: key, p_page_url: location.href,
   })
+  if (error) {
+    console.error('[QA] failed to load tags:', error.message)
+    return
+  }
   const rows = (data ?? []) as Row[]
   const unfound: Row[] = []
   for (const r of rows) {
@@ -27,6 +33,7 @@ async function loadPins() {
 }
 
 function enableTagMode() {
+  if (armed) return; armed = true
   const onClick = async (e: MouseEvent) => {
     if ((e.target as Element).classList?.contains('qa-toolbar-btn')) return
     e.preventDefault(); e.stopPropagation()
@@ -34,13 +41,18 @@ function enableTagMode() {
     const comment = prompt('Comment for this element:')  // ponytail: native prompt, replace with inline box if UX demands
     if (comment) {
       const key = await getKey()
-      await sb.rpc('create_tag', {
+      const { error } = await sb.rpc('create_tag', {
         p_project_key: key, p_anchor: generateAnchor(el),
         p_comment: comment, p_page_url: location.href,
       })
-      location.reload()
+      if (error) {
+        alert('QA Tagger: failed to save tag — ' + error.message)
+      } else {
+        location.reload()
+      }
     }
     document.removeEventListener('click', onClick, true)
+    armed = false
   }
   document.addEventListener('click', onClick, true)
 }
