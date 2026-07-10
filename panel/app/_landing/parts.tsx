@@ -10,6 +10,20 @@ export function Pin({ size = 22, className = '' }: { size?: number; className?: 
   )
 }
 
+/* ---------- Logo (pin badge + wordmark) ---------- */
+export function Logo({ size = 28, word = true }: { size?: number; word?: boolean }) {
+  return (
+    <span className="inline-flex items-center gap-2">
+      <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden>
+        <rect width="32" height="32" rx="8.5" fill="var(--color-accent)" />
+        <path d="M16 7c-3.4 0-6.2 2.7-6.2 6.1 0 4.4 6.2 10 6.2 10s6.2-5.6 6.2-10C22.2 9.7 19.4 7 16 7z" fill="var(--color-surface)" />
+        <circle cx="16" cy="13" r="2.5" fill="var(--color-accent)" />
+      </svg>
+      {word && <span className="font-display text-[1.05rem] font-bold tracking-tight text-ink">ClientPin</span>}
+    </span>
+  )
+}
+
 /* ---------- Icons (stroke = currentColor) ---------- */
 const S = { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.7, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
 export const IconCursor = () => (<svg {...S}><path d="M4 4l7 16 2.5-6.5L20 11z" /></svg>)

@@ -3,19 +3,13 @@ import { Nav } from './_landing/Nav'
 import { Reveal } from './_landing/Reveal'
 import { CopyPrompt } from './_landing/CopyPrompt'
 import {
-  Pin, ListPreview, Thumb, StatusChip,
+  Pin, Logo, ListPreview, Thumb, StatusChip,
   IconDownload, IconCamera, IconLocate, IconLink, IconShield, IconSparkle, IconCheck, IconClock,
 } from './_landing/parts'
 
 const display = Bricolage_Grotesque({ subsets: ['latin'], weight: ['600', '700', '800'], variable: '--font-bricolage' })
 const body = Hanken_Grotesk({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-hanken' })
 const codeFont = JetBrains_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-jb' })
-
-const heroGlow = {
-  background:
-    'radial-gradient(50rem 32rem at 22% -8%, oklch(0.62 0.20 262 / 0.16), transparent 62%),' +
-    'radial-gradient(42rem 28rem at 84% 2%, oklch(0.70 0.15 150 / 0.12), transparent 60%)',
-}
 
 // blue / amber / green — the product's own triad, used to color sections
 const T = [
@@ -61,8 +55,9 @@ export default function Landing() {
       <Nav />
 
       {/* Hero */}
-      <section className="relative">
-        <div aria-hidden className="pointer-events-none absolute inset-0" style={heroGlow} />
+      <section className="relative overflow-hidden">
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-[url('/hero-bg.svg')] bg-cover bg-top" />
+        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 52%, var(--color-bg))' }} />
         <div className="relative mx-auto max-w-3xl px-6 pt-16 text-center lg:pt-24">
           <p className="rise mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-[0.75rem] text-ink-dim" style={{ animationDelay: '0ms' }}>
             <Pin size={13} /> Chrome extension for UI QA and client feedback
@@ -195,7 +190,7 @@ export default function Landing() {
 
       {/* Footer */}
       <footer className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-10 text-[0.8125rem] text-ink-mute">
-        <div className="flex items-center gap-2"><span className="grid h-5 w-5 place-items-center rounded-md bg-accent text-[0.65rem] font-bold text-accent-ink">C</span><span className="font-display font-bold text-ink-dim">ClientPin</span></div>
+        <Logo size={22} />
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
           <a href="#how" className="transition-colors hover:text-ink-dim">How it works</a>
           <a href="#features" className="transition-colors hover:text-ink-dim">Features</a>
