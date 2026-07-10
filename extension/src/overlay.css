@@ -43,3 +43,22 @@
 
 /* Crosshair everywhere while picking a target. */
 html.qa-tagging, html.qa-tagging * { cursor: crosshair !important; }
+
+.qa-bubble {
+  position: absolute; z-index: 2147483647; width: 260px;
+  background: oklch(0.995 0.001 260); color: oklch(0.30 0.012 265);
+  border: 1px solid oklch(0.912 0.004 260); border-radius: 12px;
+  box-shadow: 0 8px 24px oklch(0.20 0.02 265 / 0.28); padding: 10px;
+  font: 400 13px 'Roboto', system-ui, sans-serif;
+}
+.qa-bubble-input {
+  width: 100%; min-height: 62px; resize: vertical; box-sizing: border-box;
+  border: 1px solid oklch(0.912 0.004 260); border-radius: 8px; padding: 8px;
+  font: inherit; color: inherit; outline: none;
+}
+.qa-bubble-input:focus { border-color: oklch(0.55 0.17 256); }
+.qa-bubble-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
+.qa-bubble-row button { border: 0; border-radius: 8px; padding: 6px 12px; font: 500 12.5px 'Roboto', system-ui, sans-serif; cursor: pointer; }
+.qa-bubble-cancel { background: transparent; color: oklch(0.52 0.014 265); }
+.qa-bubble-send { background: oklch(0.55 0.17 256); color: oklch(0.99 0.005 256); }
+.qa-bubble-send:hover { background: oklch(0.48 0.16 256); }
