@@ -82,7 +82,14 @@ async function onPick(e: MouseEvent) {
   if (!comment) { exitTagMode(); return }
   const active = await getActive()
   if (!active) { alert('Pick a project in the extension first.'); exitTagMode(); return }
+  if (dim) dim.style.display = 'none'
+  toolbar.style.display = 'none'
+  const pins = [...document.querySelectorAll<HTMLElement>('.qa-pin')]
+  pins.forEach((p) => (p.style.display = 'none'))
   const path = await screenshot(el, active.slug)
+  if (dim) dim.style.display = ''
+  toolbar.style.display = ''
+  pins.forEach((p) => (p.style.display = ''))
   try {
     await createTag(active.project_key, generateAnchor(el), comment, location.href, path)
     location.reload()
@@ -122,7 +129,7 @@ async function locate() {
   if (!tag) return
   const el = findElement(tag.anchor)
   if (!el) return
-  el.scrollIntoView({ block: 'center', behavior: 'smooth' })
+  el.scrollIntoView({ block: 'center', behavior: 'instant' } as ScrollIntoViewOptions)
   const box = document.createElement('div'); box.className = 'qa-highlight'
   document.body.appendChild(box)
   const r = el.getBoundingClientRect()
