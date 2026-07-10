@@ -26,8 +26,8 @@ export default async function ListPage({ params }: { params: Promise<{ slug: str
       {/* Brand bar */}
       <header className="border-b border-line bg-surface">
         <div className="mx-auto flex max-w-2xl items-center gap-2 px-6 py-3">
-          <span className="grid h-5 w-5 place-items-center rounded-md bg-accent text-[0.65rem] font-bold text-accent-ink">Q</span>
-          <span className="text-[0.8125rem] font-medium text-ink-dim">Opencraft QA Tagger</span>
+          <span className="grid h-5 w-5 place-items-center rounded-md bg-accent text-[0.65rem] font-bold text-accent-ink">C</span>
+          <span className="text-[0.8125rem] font-medium text-ink-dim">ClientPin</span>
         </div>
       </header>
 

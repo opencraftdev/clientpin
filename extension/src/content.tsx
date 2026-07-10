@@ -94,7 +94,7 @@ async function onPick(e: MouseEvent) {
     await createTag(active.project_key, generateAnchor(el), comment, location.href, path)
     location.reload()
   } catch (err) {
-    alert('Opencraft QA Tagger: failed to save tag — ' + (err as Error).message)
+    alert('ClientPin: failed to save tag — ' + (err as Error).message)
     exitTagMode()
   }
 }

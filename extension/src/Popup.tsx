@@ -38,8 +38,8 @@ export function Popup() {
   return (
     <div className="qa-popup">
       <header className="qa-head">
-        <span className="qa-mark">Q</span>
-        <div><div className="qa-title">Opencraft QA Tagger</div><div className="qa-sub">Element tagging</div></div>
+        <span className="qa-mark">C</span>
+        <div><div className="qa-title">ClientPin</div><div className="qa-sub">Element tagging</div></div>
       </header>
 
       {!creating ? (

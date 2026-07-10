@@ -14,7 +14,7 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Opencraft QA Tagger",
+  title: "ClientPin",
   description: "Shareable QA lists — tag UI issues with the browser extension",
 };
 

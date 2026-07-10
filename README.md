@@ -1,4 +1,4 @@
-# Opencraft QA Tagger
+# ClientPin
 
 Tag UI issues on any website with a Chrome extension, then share a link to the list. Anyone with the link can see each tagged component (screenshot + locate link), change its status, and copy a ready-to-paste **AI-fix prompt**. Lists are public by link and are deleted 7 days after their last activity.
 
