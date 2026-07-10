@@ -79,8 +79,16 @@ export default function Landing() {
           </div>
         </div>
         {/* Concrete product shot */}
-        <div className="relative mx-auto mt-14 max-w-4xl px-6 pb-8">
+        <div className="relative mx-auto mt-14 max-w-4xl px-6">
           <div className="rise" style={{ animationDelay: '380ms' }}><ListPreview /></div>
+        </div>
+        {/* Powered by */}
+        <div className="relative mx-auto max-w-4xl px-6 pb-12 pt-6 text-center">
+          <a href="https://ocraft.id/" target="_blank" rel="noreferrer noopener"
+             className="inline-flex items-center gap-1.5 text-[0.8125rem] text-ink-mute transition-colors hover:text-ink-dim">
+            Powered by <span className="font-semibold text-ink-dim">Opencraft</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M7 17L17 7M9 7h8v8" /></svg>
+          </a>
         </div>
       </section>
 
