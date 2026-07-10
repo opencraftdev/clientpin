@@ -5,10 +5,16 @@ import { CopyField } from './CopyField'
 
 const field = 'ring-accent w-full rounded-lg border border-line bg-surface px-3 py-2 text-[0.875rem] focus:border-accent focus:outline-none'
 
+// ponytail: module-scope counter; deterministic 'm0' for initial SSR row, crypto.randomUUID() only at click time
+let seq = 0
+const nextId = () => `m${++seq}`
+
+type MilestoneRow = Milestone & { id: string }
+
 export function OnboardingForm({ appUrl }: { appUrl: string }) {
   const [name, setName] = useState(''); const [desc, setDesc] = useState('')
   const [github, setGithub] = useState(''); const [site, setSite] = useState(''); const [pw, setPw] = useState('')
-  const [milestones, setMilestones] = useState<Milestone[]>([{ name: '', status: 'waiting' }])
+  const [milestones, setMilestones] = useState<MilestoneRow[]>([{ id: 'm0', name: '', status: 'waiting' }])
   const [pending, start] = useTransition()
   const [result, setResult] = useState<{ slug: string; project_key: string } | null>(null)
   const [err, setErr] = useState('')
@@ -27,7 +33,7 @@ export function OnboardingForm({ appUrl }: { appUrl: string }) {
   const submit = () => {
     setErr('')
     if (!name.trim() || !pw.trim()) { setErr('Name and password are required.'); return }
-    const ms = milestones.filter((m) => m.name.trim())
+    const ms = milestones.filter((m) => m.name.trim()).map(({ name, status }) => ({ name, status }))
     start(async () => {
       try { setResult(await createProject({ name: name.trim(), description: desc.trim(), github_link: github.trim(), site_url: site.trim(), milestones: ms, view_password: pw })) }
       catch (e) { setErr((e as Error).message) }
@@ -45,17 +51,17 @@ export function OnboardingForm({ appUrl }: { appUrl: string }) {
         <span className="text-[0.75rem] font-medium text-ink-dim">Milestones (optional)</span>
         <div className="mt-1 flex flex-col gap-2">
           {milestones.map((m, i) => (
-            <div key={i} className="flex gap-2">
+            <div key={m.id} className="flex gap-2">
               <input className={field} value={m.name} placeholder={`Milestone ${i + 1}`}
-                onChange={(e) => setMilestones(milestones.map((x, j) => j === i ? { ...x, name: e.target.value } : x))} />
+                onChange={(e) => setMilestones(milestones.map((x) => x.id === m.id ? { ...x, name: e.target.value } : x))} />
               <select className="ring-accent rounded-lg border border-line bg-surface px-2 text-[0.8125rem]" value={m.status}
-                onChange={(e) => setMilestones(milestones.map((x, j) => j === i ? { ...x, status: e.target.value as Milestone['status'] } : x))}>
+                onChange={(e) => setMilestones(milestones.map((x) => x.id === m.id ? { ...x, status: e.target.value as Milestone['status'] } : x))}>
                 <option value="waiting">Waiting</option><option value="in_progress">In progress</option><option value="done">Done</option>
               </select>
-              <button type="button" className="px-2 text-ink-mute hover:text-ink" onClick={() => setMilestones(milestones.filter((_, j) => j !== i))}>×</button>
+              <button type="button" className="px-2 text-ink-mute hover:text-ink" onClick={() => setMilestones(milestones.filter((x) => x.id !== m.id))}>×</button>
             </div>
           ))}
-          <button type="button" className="w-fit text-[0.8125rem] font-medium text-accent" onClick={() => setMilestones([...milestones, { name: '', status: 'waiting' }])}>+ Add milestone</button>
+          <button type="button" className="w-fit text-[0.8125rem] font-medium text-accent" onClick={() => setMilestones([...milestones, { id: nextId(), name: '', status: 'waiting' }])}>+ Add milestone</button>
         </div>
       </div>
 

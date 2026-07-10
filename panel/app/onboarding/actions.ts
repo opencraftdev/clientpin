@@ -15,5 +15,6 @@ export async function createProject(input: {
   })
   if (error) throw new Error(error.message)
   const row = Array.isArray(data) ? data[0] : data
+  if (!row) throw new Error('Project creation returned no data')
   return row as { slug: string; project_key: string }
 }
