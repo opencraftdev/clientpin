@@ -5,7 +5,7 @@ export default function Home() {
         <span className="mx-auto mb-4 grid h-11 w-11 place-items-center rounded-2xl bg-accent text-accent-ink shadow-bar">
           <span className="text-[1.1rem] font-bold">Q</span>
         </span>
-        <h1 className="text-[1.5rem] font-medium tracking-tight text-ink">OpenCraftQA</h1>
+        <h1 className="text-[1.5rem] font-medium tracking-tight text-ink">Opencraft QA Tagger</h1>
         <p className="mt-2 text-[0.9375rem] text-ink-dim">
           Tag UI issues on any site with the browser extension, then share a link to the list. Links expire after 7 days of inactivity.
         </p>

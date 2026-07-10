@@ -14,8 +14,8 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "QA Admin Panel",
-  description: "Admin panel for QA element tagging",
+  title: "Opencraft QA Tagger",
+  description: "Shareable QA lists — tag UI issues with the browser extension",
 };
 
 export default function RootLayout({
