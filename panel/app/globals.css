@@ -1,35 +1,45 @@
 @import "tailwindcss";
 
-/* ── Console-native token system (see DESIGN.md) ───────────────── */
+/* ── Material / Google-Admin light token system (see DESIGN.md) ── */
 @theme {
-  /* Warm charcoal neutrals (hue 70) */
-  --color-bg:        oklch(0.17 0.008 70);
-  --color-surface:   oklch(0.21 0.008 70);
-  --color-surface-2: oklch(0.25 0.009 70);
-  --color-line:      oklch(0.31 0.010 70);
-  --color-line-2:    oklch(0.40 0.012 70);
+  /* Cool-tinted neutrals (hue 260) */
+  --color-bg:        oklch(0.975 0.003 260);
+  --color-surface:   oklch(0.995 0.001 260);
+  --color-surface-2: oklch(0.965 0.004 260);
+  --color-line:      oklch(0.912 0.004 260);
+  --color-line-2:    oklch(0.86 0.005 260);
 
-  --color-ink:       oklch(0.93 0.006 75);
-  --color-ink-dim:   oklch(0.71 0.010 75);
-  --color-ink-mute:  oklch(0.55 0.012 75);
+  --color-ink:       oklch(0.30 0.012 265);
+  --color-ink-dim:   oklch(0.52 0.014 265);
+  --color-ink-mute:  oklch(0.63 0.012 265);
 
-  /* Interactive accent — acid lime (actions, focus, selection only) */
-  --color-accent:       oklch(0.86 0.19 128);
-  --color-accent-press: oklch(0.80 0.18 128);
-  --color-accent-ink:   oklch(0.20 0.02 128);
+  /* Google-blue accent — actions, active nav, focus */
+  --color-accent:       oklch(0.55 0.17 256);
+  --color-accent-press: oklch(0.48 0.16 256);
+  --color-accent-ink:   oklch(0.99 0.005 256);
+  --color-accent-soft:  oklch(0.95 0.03 256);
 
-  /* Semantic status triad */
-  --color-new:      oklch(0.82 0.16 65);
-  --color-progress: oklch(0.74 0.12 235);
-  --color-resolved: oklch(0.66 0.045 150);
+  /* Status triad + soft chip backgrounds */
+  --color-new:           oklch(0.52 0.13 60);
+  --color-new-soft:      oklch(0.95 0.05 75);
+  --color-progress:      oklch(0.50 0.15 256);
+  --color-progress-soft: oklch(0.94 0.04 256);
+  --color-resolved:      oklch(0.46 0.12 150);
+  --color-resolved-soft: oklch(0.93 0.05 150);
 
-  --color-danger:   oklch(0.64 0.19 25);
+  --color-danger:        oklch(0.55 0.20 27);
 
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-sans: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-roboto-mono), ui-monospace, monospace;
 }
 
-html { color-scheme: dark; }
+/* Material elevation */
+:root {
+  --shadow-card: 0 1px 2px oklch(0.30 0.01 265 / 0.10), 0 1px 3px oklch(0.30 0.01 265 / 0.06);
+  --shadow-bar:  0 1px 2px oklch(0.30 0.01 265 / 0.08);
+}
+
+html { color-scheme: light; }
 
 body {
   background: var(--color-bg);
@@ -46,27 +56,27 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* Focus ring — accent, offset */
+.shadow-card { box-shadow: var(--shadow-card); }
+.shadow-bar  { box-shadow: var(--shadow-bar); }
+
+/* Focus ring — accent */
 .ring-accent:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
-/* Copy-pulse feedback */
-@keyframes copy-pulse {
-  0%   { color: var(--color-accent); }
-  100% { color: inherit; }
-}
-.copy-pulse { animation: copy-pulse 600ms ease-out; }
+/* Copy confirm */
+@keyframes copy-pulse { 0% { color: var(--color-accent); } 100% { color: inherit; } }
+.copy-pulse { animation: copy-pulse 700ms ease-out; }
 
-/* Skeleton shimmer for loading rows */
+/* Skeleton shimmer */
 @keyframes shimmer { 100% { background-position: -200% 0; } }
 .skeleton {
   background: linear-gradient(90deg,
-    var(--color-surface) 0%, var(--color-surface-2) 50%, var(--color-surface) 100%);
+    var(--color-surface-2) 0%, var(--color-line) 50%, var(--color-surface-2) 100%);
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-out infinite;
 }
 
-::selection { background: var(--color-accent); color: var(--color-accent-ink); }
+::selection { background: var(--color-accent-soft); }

@@ -12,8 +12,8 @@ export const isValidStatus = (s: string): s is Status =>
 
 // Presentational metadata shared by server rows and the client status control.
 // `color` maps to a CSS token defined in globals.css.
-export const STATUS_META: Record<Status, { label: string; glyph: string; color: string }> = {
-  new:         { label: 'new',         glyph: '●', color: 'var(--color-new)' },
-  in_progress: { label: 'in progress', glyph: '◐', color: 'var(--color-progress)' },
-  resolved:    { label: 'resolved',    glyph: '✓', color: 'var(--color-resolved)' },
+export const STATUS_META: Record<Status, { label: string; color: string; soft: string }> = {
+  new:         { label: 'New',         color: 'var(--color-new)',      soft: 'var(--color-new-soft)' },
+  in_progress: { label: 'In progress', color: 'var(--color-progress)', soft: 'var(--color-progress-soft)' },
+  resolved:    { label: 'Resolved',    color: 'var(--color-resolved)', soft: 'var(--color-resolved-soft)' },
 }

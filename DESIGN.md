@@ -1,100 +1,94 @@
 # DESIGN.md — QA Admin Panel
 
-Register: **product** (design serves the task). The tool should disappear into triage.
+Register: **product** (design serves the task). Familiar, calm, easy to scan. The tool should disappear into triage.
 
 ## Context
 
-A QA lead scans dense lists of client-reported UI bugs across several client sites and moves each through a status lifecycle, in long focused sessions on a large screen. The data is technical: project keys, page URLs, DOM selectors, element tags. The interface treats that technical data as first-class, not as afterthought strings.
+A QA lead manages client-reported UI bugs across several client sites and moves each through a status lifecycle. The data is technical (project keys, page URLs, DOM selectors), but the operators are not all engineers, so the interface prioritizes **ease of use and legibility** over density.
 
-**Direction: console-native.** Warm charcoal dark surface, a single acid-lime signal accent for interaction, and a monospace layer for every machine value. Dense rows over cards. It should feel built for engineers reading element anchors, not a generic SaaS dashboard.
+**Direction: Material / Google-Admin-console.** A bright, airy light theme with a **persistent left sidebar** for navigation, a clean top app bar, content in soft cards, Google-blue primary actions, and Material-style status chips. Familiar on purpose: anyone who has used Google Admin, GCP, or Google Workspace should feel immediately at home.
 
-Anti-references: dashboard-navy admin templates, SaaS-cream light UIs, gradient hero-metric cards, glassmorphism.
+Anti-references: dark "developer console" UIs, dense terminal aesthetics, decorative gradients, glassmorphism.
 
 ## Theme
 
-Dark. The scene forces it: long technical sessions, values-dense screens, eyes on the same surface for hours. Warm (not blue) charcoal so it reads as "console/paper-under-lamp," not "midnight SaaS."
+**Light.** The scene forces it: an approachable admin tool used in normal office light by mixed-skill operators who want clarity, not a moody engineering surface. Bright neutral canvas, white cards, generous whitespace.
 
-## Color — OKLCH
+## Color — OKLCH (light, Material-derived)
 
-Never `#000`/`#fff`. Neutrals tinted warm (hue ~70). Strategy: **Restrained** — tinted neutrals + one accent, plus a semantic status triad.
+Never `#000`/`#fff`. Neutrals tinted slightly cool (hue ~260). Strategy: **Restrained** — near-white surfaces, grey text hierarchy, one Google-blue accent, plus a semantic status triad rendered as soft chips.
 
 ```css
-:root {
-  /* Warm charcoal neutrals (hue 70, low chroma) */
-  --bg:        oklch(0.17 0.008 70);   /* app background            */
-  --surface:   oklch(0.21 0.008 70);   /* panels, rows, toolbars    */
-  --surface-2: oklch(0.25 0.009 70);   /* hover row, raised control */
-  --border:    oklch(0.31 0.010 70);   /* hairlines, dividers       */
-  --border-2:  oklch(0.40 0.012 70);   /* focus-adjacent, stronger  */
-  --text:      oklch(0.93 0.006 75);   /* primary text              */
-  --text-dim:  oklch(0.71 0.010 75);   /* secondary / labels        */
-  --text-mute: oklch(0.55 0.012 75);   /* meta, disabled hint       */
+--color-bg:        oklch(0.975 0.003 260);  /* app canvas — light grey     */
+--color-surface:   oklch(0.995 0.001 260);  /* cards, sidebar, top bar      */
+--color-surface-2: oklch(0.965 0.004 260);  /* hover, selected nav          */
+--color-line:      oklch(0.912 0.004 260);  /* dividers, card borders (#dadce0) */
+--color-line-2:    oklch(0.86 0.005 260);   /* stronger border              */
 
-  /* Interactive accent — acid lime. Actions, focus, current selection ONLY. */
-  --accent:      oklch(0.86 0.19 128);
-  --accent-press:oklch(0.80 0.18 128);
-  --accent-ink:  oklch(0.20 0.02 128);  /* text ON accent            */
+--color-ink:       oklch(0.30 0.012 265);   /* primary text (#202124)       */
+--color-ink-dim:   oklch(0.52 0.014 265);   /* secondary (#5f6368)          */
+--color-ink-mute:  oklch(0.63 0.012 265);   /* meta, placeholder            */
 
-  /* Status triad — semantic, deliberately distinct from --accent */
-  --new:         oklch(0.82 0.16 65);   /* amber  — needs attention  */
-  --progress:    oklch(0.74 0.12 235);  /* azure  — being worked     */
-  --resolved:    oklch(0.66 0.045 150); /* dim green — done, muted    */
+/* Google blue accent — primary actions, active nav, focus */
+--color-accent:       oklch(0.55 0.17 256);
+--color-accent-press: oklch(0.48 0.16 256);
+--color-accent-ink:   oklch(0.99 0.005 256); /* text on accent (white)      */
+--color-accent-soft:  oklch(0.95 0.03 256);  /* selected-nav tint           */
 
-  /* Feedback */
-  --danger:      oklch(0.64 0.19 25);
-  --focus-ring:  oklch(0.86 0.19 128 / 0.55);
-}
+/* Status triad + soft chip backgrounds */
+--color-new:       oklch(0.55 0.13 60);      /* amber-brown text            */
+--color-new-soft:  oklch(0.95 0.05 75);      /* amber chip bg               */
+--color-progress:  oklch(0.50 0.15 256);     /* blue text                   */
+--color-progress-soft: oklch(0.94 0.04 256); /* blue chip bg                */
+--color-resolved:  oklch(0.48 0.12 150);     /* green text                  */
+--color-resolved-soft: oklch(0.93 0.05 150); /* green chip bg               */
+
+--color-danger:    oklch(0.55 0.20 27);
+
+/* Material elevation (soft, low-spread) */
+--shadow-card: 0 1px 2px oklch(0.30 0.01 265 / 0.10), 0 1px 3px oklch(0.30 0.01 265 / 0.06);
+--shadow-bar:  0 1px 2px oklch(0.30 0.01 265 / 0.08);
 ```
 
 Rules:
-- `--accent` is for interaction only (primary buttons, focus rings, current selection, `+ new`). Never decoration.
-- Status color appears as a **dot/glyph + colored label**, never as a full-row fill or a left side-stripe.
-- `resolved` is intentionally low-chroma: done work recedes.
+- Accent = interaction only (primary buttons, active nav item, focus ring, links). Never decoration.
+- Status shows as a **soft pill**: tinted background + colored text + small dot. Never a full-row fill or side-stripe.
 
 ## Typography
 
-Two families, loaded via `next/font`:
-- **Sans (UI):** Inter → `--font-sans`. Labels, headings, body, buttons.
-- **Mono (machine values):** JetBrains Mono → `--font-mono`. Project keys, URLs, DOM selectors, element tags, IDs, timestamps.
+Loaded via `next/font/google`:
+- **Roboto** → UI (labels, headings, body, buttons). The Material default.
+- **Roboto Mono** → machine values only (project keys, URLs, DOM selectors, tags, IDs), tinted `--color-ink-dim`.
 
-The mono layer is the signature: any value the system generated or the browser produced renders in mono, tinted `--text-dim`. Any value a human wrote (comment, project name) renders in sans, `--text`.
-
-Scale (fixed rem, ratio ~1.2, dense base):
+Scale (fixed rem, ratio ~1.2). Weights: 400 body, 500 labels/buttons/nav, 500–700 headings.
 ```
---fs-meta: 0.75rem   /* 12px — URLs, selectors, meta   */
---fs-body: 0.8125rem /* 13px — table body, labels       */
---fs-ui:   0.875rem  /* 14px — inputs, buttons, default  */
---fs-h2:   1.0625rem /* 17px — section headers           */
---fs-h1:   1.375rem  /* 22px — page title                */
+--fs-meta: 0.75rem   --fs-body: 0.8125rem   --fs-ui: 0.875rem
+--fs-h2:   1.125rem  --fs-h1:  1.5rem
 ```
-Weights: 400 body, 500 labels/buttons, 600 headings. Numeric/mono uses `font-variant-numeric: tabular-nums`.
 
-## Layout
+## Layout — the Google-Admin shell
 
-- **No cards for lists.** Full-width rows separated by `--border` hairlines. Cards were the preview's rejected default.
-- **App shell:** slim top bar (`--surface`, app mark left, project context + sign-out right), then content max-width ~72rem, generous left/right gutter.
-- **Project detail:** sticky sub-header (project name + key + filter chips), then the tag rows below.
-- Spacing on a 4px grid; vary rhythm (tight within a row, roomy between sections). Row vertical padding ~10–12px for density without cramping.
-- Responsive is structural: below ~640px the two-line row stacks and the top bar condenses. No fluid type.
+- **Persistent left sidebar (~248px):** product mark at top ("QA Admin"), primary nav, then the live list of the user's **Projects** as nav items (one-click switching), and a prominent **＋ New project**. Active item gets `--color-accent-soft` bg + accent text with a rounded-full pill shape (Material nav style).
+- **Top app bar:** thin, `--shadow-bar`, holds the current page title / breadcrumb on the left and the account + **Sign out** on the right.
+- **Content:** roomy padding (24–32px), cards on `--color-bg`, max readable width. Data as clean tables/lists inside a single card, not nested cards.
+- Responsive: sidebar collapses to an off-canvas / top strip under ~768px; tables scroll horizontally. No fluid type.
 
-## Components (each ships default / hover / focus / active / disabled / loading / empty)
+## Components (default / hover / focus / active / disabled / loading / empty)
 
-- **Primary button:** `--accent` fill, `--accent-ink` text, weight 500. Hover lifts lightness slightly; active → `--accent-press`; focus → 2px `--focus-ring` offset ring.
-- **Ghost button / links:** transparent, `--text-dim`; hover → `--text` + `--surface-2` wash.
-- **Input:** `--surface` field, 1px `--border`, `--text`. Focus → `--border` becomes `--accent`, plus focus ring. Mono inputs (keys) use `--font-mono`.
-- **Status indicator:** a filled dot (`new` amber, `progress` azure, `resolved` dim-green) + label in the same hue, `--fs-body`, weight 500. Glyph option: `●` new, `◐` in-progress, `✓` resolved.
-- **Status select:** styled native `<select>` on `--surface-2`, current value shows its status dot. Change animates the dot color 150ms.
-- **Project key chip:** mono, truncated (`4cccbb90…`) with a `[copy]` affordance; click copies full key, flashes accent for 1 pulse.
-- **Filter chips:** `All / ● new / ◐ in-progress / ✓ resolved`; selected chip gets `--surface-2` + its status color, others `--text-dim`.
-- **Tag row (two lines):** line 1 = status + comment (sans); line 2 = `page_url · <selector>` in mono `--text-dim`. Hover → `--surface-2`.
-- **Empty states teach:** projects empty → "No projects yet. Create one to get a project key for the extension." tags empty → "No tags on this project yet. Share the project key with your client to start collecting."
-- **Loading:** skeleton rows (shimmering `--surface`→`--surface-2`), never centered spinners.
+- **Primary button:** `--color-accent` fill, white text, `--shadow-bar`, radius 8px. Hover darkens; focus ring accent.
+- **Text/ghost button:** accent text, transparent; hover → `--color-accent-soft`.
+- **Nav item:** rounded-full, `--color-ink-dim`; hover → `--color-surface-2`; active → `--color-accent-soft` + accent text + 500 weight, with a leading icon.
+- **Input:** white field, 1px `--color-line`, radius 8px; focus → 2px accent border (Material outlined field).
+- **Status chip / select:** soft pill (`*-soft` bg, colored text, leading dot). The status control is a pill-shaped select showing the current status; changing it recolors instantly (optimistic).
+- **Key chip:** mono, truncated, click-to-copy with a check confirmation.
+- **Card:** white, `--shadow-card`, radius 12px, `--color-line` hairline. One card per logical group.
+- **Empty states teach**, never "nothing here."
+- **Loading:** skeleton rows, not spinners.
 
 ## Motion
 
-- 150–200ms, `ease-out` (quart/expo). Applies to hover washes, focus rings, status-dot color, copy-pulse.
-- Never animate layout properties. No page-load choreography. Motion only conveys state.
+150–200ms `ease-out`. Nav hover/active, chip recolor, copy confirm, button press. Never animate layout. No page-load choreography.
 
-## Bans (in force here)
+## Bans (in force)
 
-No side-stripe borders, no gradient text, no glassmorphism, no hero-metric cards, no identical card grids, no modals for the create-project or comment flows (inline/progressive instead). No em dashes in UI copy.
+No side-stripe borders, no gradient text, no glassmorphism, no hero-metric cards, no nested cards, no modals for create/comment (inline), no em dashes in UI copy.
