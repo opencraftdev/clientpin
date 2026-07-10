@@ -1,0 +1,77 @@
+/* Extension popup — Material / Google-Admin theme, matched to the panel. */
+:root {
+  --bg:        oklch(0.975 0.003 260);
+  --surface:   oklch(0.995 0.001 260);
+  --line:      oklch(0.912 0.004 260);
+  --ink:       oklch(0.30 0.012 265);
+  --ink-dim:   oklch(0.52 0.014 265);
+  --ink-mute:  oklch(0.63 0.012 265);
+  --accent:       oklch(0.55 0.17 256);
+  --accent-press: oklch(0.48 0.16 256);
+  --accent-ink:   oklch(0.99 0.005 256);
+  --ok:        oklch(0.46 0.12 150);
+  --mono: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; }
+
+body {
+  width: 300px;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.qa-popup { padding: 18px 16px 16px; }
+
+.qa-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+
+.qa-mark {
+  display: grid; place-items: center;
+  width: 30px; height: 30px; border-radius: 9px;
+  background: var(--accent); color: var(--accent-ink);
+  font-weight: 700; font-size: 15px; line-height: 1;
+  box-shadow: 0 1px 2px oklch(0.30 0.01 265 / 0.15);
+}
+.qa-title { font-size: 14.5px; font-weight: 500; letter-spacing: -0.01em; }
+.qa-sub   { font-size: 11.5px; color: var(--ink-mute); margin-top: 1px; }
+
+.qa-field { display: flex; flex-direction: column; gap: 6px; }
+.qa-label { font-size: 11px; font-weight: 500; color: var(--ink-dim); }
+
+.qa-input {
+  width: 100%;
+  font-family: var(--mono); font-size: 12.5px; letter-spacing: -0.01em;
+  color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 8px;
+  padding: 9px 10px; outline: none;
+  transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
+}
+.qa-input::placeholder { color: var(--ink-mute); }
+.qa-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px oklch(0.55 0.17 256 / 0.15);
+}
+
+.qa-btn {
+  margin-top: 12px; width: 100%;
+  font-family: var(--sans); font-size: 13.5px; font-weight: 500;
+  color: var(--accent-ink); background: var(--accent);
+  border: 0; border-radius: 8px; padding: 9px 12px; cursor: pointer;
+  box-shadow: 0 1px 2px oklch(0.30 0.01 265 / 0.12);
+  transition: background-color 150ms ease-out;
+}
+.qa-btn:hover  { background: var(--accent-press); }
+.qa-btn:active { transform: translateY(0.5px); }
+.qa-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.qa-saved {
+  height: 16px; margin-top: 8px;
+  font-size: 12px; font-weight: 500; color: var(--ok);
+  opacity: 0; transition: opacity 150ms ease-out;
+}
+.qa-saved.show { opacity: 1; }
