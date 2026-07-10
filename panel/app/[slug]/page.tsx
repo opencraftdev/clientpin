@@ -12,7 +12,7 @@ import { CopyButton } from './CopyButton'
 
 function pathOf(u: string): string { try { return new URL(u).pathname } catch { return u } }
 
-async function loadDashboard(slug: string): Promise<Dashboard | null> {
+async function loadDashboard(slug: string): Promise<{ dash: Dashboard; isOwner: boolean } | null> {
   // Owner path: authenticated read gives the view_token, then reuse get_dashboard.
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -20,26 +20,27 @@ async function loadDashboard(slug: string): Promise<Dashboard | null> {
     const { data: owned } = await supabase.from('projects').select('view_token').eq('slug', slug).eq('owner', user.id).maybeSingle()
     if (owned?.view_token) {
       const { data } = await sb.rpc('get_dashboard', { p_slug: slug, p_token: owned.view_token })
-      if (data) return data as Dashboard
+      if (data) return { dash: data as Dashboard, isOwner: true }
     }
   }
   // Viewer path: token cookie.
   const token = (await cookies()).get(`pv-${slug}`)?.value
   if (token) {
     const { data } = await sb.rpc('get_dashboard', { p_slug: slug, p_token: token })
-    if (data) return data as Dashboard
+    if (data) return { dash: data as Dashboard, isOwner: false }
   }
   return null
 }
 
 export default async function DashboardPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const dash = await loadDashboard(slug)
+  const result = await loadDashboard(slug)
   // No token/session that unlocks this slug -> show the password gate. An unknown
   // slug also lands here (its password can never match), which avoids leaking whether
   // a project exists. notFound() is intentionally not used here.
-  if (!dash) return <PasswordGate slug={slug} />
+  if (!result) return <PasswordGate slug={slug} />
 
+  const { dash, isOwner } = result
   const { project, tags } = dash
   const pct = progressPct(project.milestones)
   return (
@@ -58,7 +59,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
               </div>
               <div className="text-right"><div className="text-[0.6875rem] text-ink-mute">Progress</div><div className="text-[2rem] font-bold text-accent">{pct}%</div></div>
             </div>
-            <div className="mt-6"><Milestones milestones={project.milestones} /></div>
+            <div className="mt-6"><Milestones milestones={project.milestones} isOwner={isOwner} slug={slug} /></div>
             {(project.site_url || project.github_link) && (
               <div className="mt-6">
                 <h2 className="text-[0.9375rem] font-semibold text-ink">Build &amp; Test</h2>
