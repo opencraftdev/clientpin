@@ -18,6 +18,8 @@ const T = [
   { fg: 'var(--color-resolved)', soft: 'var(--color-resolved-soft)' },
 ]
 
+const DOWNLOAD = 'https://drive.google.com/uc?export=download&id=1BdGhCMq_RWir4spB-5xST8w8hs-ptkpi'
+
 const PROMPT = `Fix this UI issue on /checkout:
 Problem: "Button text overflows on mobile"
 Element: <button.cta>`
@@ -146,7 +148,7 @@ export default function Landing() {
             <p className="font-code text-[0.8rem] font-medium text-accent">INSTALL</p>
             <h2 className="mt-2 font-display font-bold leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Add ClientPin to your browser.</h2>
             <p className="mt-4 max-w-sm text-[1rem] leading-relaxed text-ink-dim">Not on the Chrome Web Store yet, so you install the build directly. It takes about a minute and works in any Chromium browser.</p>
-            <a href="/clientpin.zip" className="mt-7 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-[1rem] font-semibold text-accent-ink shadow-bar transition-colors hover:bg-accent-press"><IconDownload /> Download ClientPin (.zip)</a>
+            <a href={DOWNLOAD} target="_blank" rel="noreferrer" className="mt-7 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-[1rem] font-semibold text-accent-ink shadow-bar transition-colors hover:bg-accent-press"><IconDownload /> Download ClientPin (.zip)</a>
             <p className="mt-3 text-[0.8125rem] text-ink-mute">Keep the unzipped folder. Deleting it removes the extension.</p>
           </Reveal>
           <Reveal delay={100}>
@@ -192,7 +194,7 @@ export default function Landing() {
             <h2 className="font-display font-bold leading-tight tracking-[-0.02em] text-accent-ink" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)' }}>Stop describing bugs. Pin them.</h2>
             <p className="mt-2 text-[1rem] text-accent-ink/85">Install ClientPin and share your first list in minutes.</p>
           </div>
-          <a href="/clientpin.zip" className="inline-flex shrink-0 items-center gap-2 rounded-full bg-bg px-6 py-3.5 text-[1rem] font-semibold text-accent transition-transform hover:-translate-y-0.5"><IconDownload /> Download the extension</a>
+          <a href={DOWNLOAD} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-2 rounded-full bg-bg px-6 py-3.5 text-[1rem] font-semibold text-accent transition-transform hover:-translate-y-0.5"><IconDownload /> Download the extension</a>
         </div>
       </section>
 
