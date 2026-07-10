@@ -40,7 +40,7 @@ export async function uploadScreenshot(slug: string, blob: Blob): Promise<string
   return path
 }
 
-// ponytail: kept for Task 3.2 — Popup.tsx still imports these; removed when popup is replaced
+// ponytail: kept for Task 3.4 — content.tsx still imports getKey; remove when content script is replaced
 export const getKey = async (): Promise<string | null> => {
   const result = await chrome.storage.local.get('projectKey')
   return (result.projectKey as string) ?? null

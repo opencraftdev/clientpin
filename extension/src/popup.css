@@ -75,3 +75,10 @@ body {
   opacity: 0; transition: opacity 150ms ease-out;
 }
 .qa-saved.show { opacity: 1; }
+
+.qa-btn-ghost {
+  margin-top: 8px; background: transparent; color: var(--accent);
+  box-shadow: none;
+}
+.qa-btn-ghost:hover { background: var(--accent-soft, oklch(0.95 0.03 256)); }
+select.qa-input { cursor: pointer; }
