@@ -8,7 +8,8 @@ import type { Milestone } from '@/lib/dashboard'
 
 export async function setStatus(slug: string, tagId: string, status: string) {
   if (!isValidStatus(status)) throw new Error('bad status')
-  const { error } = await sb.rpc('set_status', { p_tag_id: tagId, p_status: status })
+  const supabase = await createServer()
+  const { error } = await supabase.rpc('set_status', { p_tag_id: tagId, p_status: status })
   if (error) throw new Error(error.message)
   revalidatePath(`/${slug}`)
 }

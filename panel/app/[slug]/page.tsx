@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { progressPct, type Dashboard } from '@/lib/dashboard'
 import { buildPrompt, buildBulkPrompt } from '@/lib/prompt'
 import type { Tag } from '@/lib/types'
+import { STATUS_META } from '@/lib/types'
 import { PasswordGate } from './PasswordGate'
 import { Sidebar } from './Sidebar'
 import { Milestones } from './Milestones'
@@ -88,7 +89,10 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
                       <p className="text-[0.9375rem] text-ink">{t.comment}</p>
                       <p className="mono mt-1 truncate text-[0.75rem] text-ink-mute">{pathOf(t.page_url)} · &lt;{t.anchor.tagName}&gt;</p>
                       <div className="mt-2 flex items-center gap-3">
-                        <StatusSelect slug={slug} tagId={t.id} value={t.status} />
+                        {isOwner
+                          ? <StatusSelect slug={slug} tagId={t.id} value={t.status} />
+                          : <span style={{ background: STATUS_META[t.status].soft, color: STATUS_META[t.status].color }} className="rounded-full px-2.5 py-0.5 text-[0.75rem] font-medium">{STATUS_META[t.status].label}</span>
+                        }
                         <CopyButton text={buildPrompt(t)} className="ring-accent rounded-md px-2 py-1 text-[0.8125rem] font-medium text-accent hover:bg-accent-soft" />
                       </div>
                     </div>
