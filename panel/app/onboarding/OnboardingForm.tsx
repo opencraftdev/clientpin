@@ -11,7 +11,7 @@ const nextId = () => `m${++seq}`
 
 type MilestoneRow = Milestone & { id: string }
 
-export function OnboardingForm({ appUrl }: { appUrl: string }) {
+export function OnboardingForm() {
   const [name, setName] = useState(''); const [desc, setDesc] = useState('')
   const [github, setGithub] = useState(''); const [site, setSite] = useState(''); const [pw, setPw] = useState('')
   const [milestones, setMilestones] = useState<MilestoneRow[]>([{ id: 'm0', name: '', status: 'waiting' }])
@@ -20,11 +20,13 @@ export function OnboardingForm({ appUrl }: { appUrl: string }) {
   const [err, setErr] = useState('')
 
   if (result) {
+    // Derive the base from the browser so the link is correct on any host with no env config.
+    const base = typeof window !== 'undefined' ? window.location.origin : ''
     return (
       <div className="flex flex-col gap-4">
         <div><h2 className="text-[1.25rem] font-semibold text-ink">Project created</h2>
           <p className="mt-1 text-[0.875rem] text-ink-dim">Share the link (with the password) and give the connect code to whoever installs the extension.</p></div>
-        <CopyField label="Public link" value={`${appUrl}/${result.slug}`} />
+        <CopyField label="Public link" value={`${base}/${result.slug}`} />
         <CopyField label="Connect code (for the extension)" value={result.project_key} />
       </div>
     )
