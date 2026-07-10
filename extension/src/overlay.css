@@ -7,6 +7,39 @@
   transition: background-color 150ms ease-out;
 }
 .qa-toolbar-btn:hover { background: oklch(0.48 0.16 256); }
+/* Active = tag mode on. Neutral/dark so it reads as "cancel". */
+.qa-toolbar-btn.qa-active { background: oklch(0.30 0.012 265); }
+.qa-toolbar-btn.qa-active:hover { background: oklch(0.24 0.012 265); }
+
 .qa-pin { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px;
   background: #e11; border: 2px solid #fff; border-radius: 50%;
   z-index: 2147483646; pointer-events: none; }
+
+/* ── Tag mode overlays ─────────────────────────────────────────── */
+/* Dim the whole page so it's obvious tag mode is active. */
+.qa-dim {
+  position: fixed; inset: 0;
+  background: oklch(0.20 0.02 265 / 0.34);
+  z-index: 2147483644; pointer-events: none;
+}
+
+/* Inspector-style highlight that follows the hovered element. */
+.qa-highlight {
+  position: fixed; z-index: 2147483645; pointer-events: none; display: none;
+  outline: 2px solid oklch(0.55 0.17 256);
+  background: oklch(0.55 0.17 256 / 0.16);
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px oklch(0.99 0.005 256 / 0.6);
+  transition: top 70ms ease-out, left 70ms ease-out,
+              width 70ms ease-out, height 70ms ease-out;
+}
+.qa-hl-label {
+  position: absolute; top: -21px; left: 0;
+  background: oklch(0.55 0.17 256); color: oklch(0.99 0.005 256);
+  font: 500 11px/1 'Roboto Mono', ui-monospace, monospace;
+  padding: 3px 6px; border-radius: 4px; white-space: nowrap;
+  box-shadow: 0 1px 3px oklch(0.20 0.02 265 / 0.4);
+}
+
+/* Crosshair everywhere while picking a target. */
+html.qa-tagging, html.qa-tagging * { cursor: crosshair !important; }
