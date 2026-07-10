@@ -5,6 +5,10 @@ import type { Tag } from '@/lib/types'
 import { StatusSelect } from './StatusSelect'
 import { CopyButton } from './CopyButton'
 
+function pathOf(u: string): string {
+  try { return new URL(u).pathname } catch { return u }
+}
+
 function daysLeft(lastActive: string): number {
   const ms = new Date(lastActive).getTime() + 7 * 864e5 - Date.now()
   return Math.max(0, Math.ceil(ms / 864e5))
@@ -27,7 +31,7 @@ export default async function ListPage({ params }: { params: Promise<{ slug: str
         </div>
         {tags.length > 0 && (
           <CopyButton
-            text={buildBulkPrompt(tags)} label="Copy AI Fix for all"
+            text={buildBulkPrompt(tags)} label="Copy AI Fix (open items)"
             className="ring-accent shadow-bar rounded-lg bg-accent px-4 py-2 text-[0.8125rem] font-medium text-accent-ink hover:bg-accent-press"
           />
         )}
@@ -46,7 +50,7 @@ export default async function ListPage({ params }: { params: Promise<{ slug: str
               <div className="min-w-0 flex-1">
                 <p className="text-[0.9375rem] text-ink">{t.comment}</p>
                 <p className="mono mt-1 truncate text-[0.75rem] text-ink-mute">
-                  {new URL(t.page_url).pathname} · &lt;{t.anchor.tagName}&gt;
+                  {pathOf(t.page_url)} · &lt;{t.anchor.tagName}&gt;
                 </p>
                 <div className="mt-2 flex items-center gap-3">
                   <StatusSelect slug={slug} tagId={t.id} value={t.status} />

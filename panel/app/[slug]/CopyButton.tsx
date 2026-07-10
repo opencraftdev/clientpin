@@ -6,7 +6,15 @@ export function CopyButton({ text, label = 'AI Fix', className = '' }: { text: s
   return (
     <button
       type="button"
-      onClick={async () => { await navigator.clipboard.writeText(text); setDone(true); setTimeout(() => setDone(false), 1200) }}
+      onClick={async () => {
+        try {
+          await navigator.clipboard.writeText(text)
+          setDone(true)
+          setTimeout(() => setDone(false), 1200)
+        } catch {
+          // clipboard unavailable (non-secure context / denied) — no-op
+        }
+      }}
       className={className}
     >
       {done ? 'Copied' : label}
