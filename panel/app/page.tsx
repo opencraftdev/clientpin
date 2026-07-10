@@ -71,7 +71,7 @@ export default function Landing() {
             Tag UI issues on any live site just by clicking the element. Every pin becomes a screenshot, a status, and an AI-fix prompt, shared as one link.
           </p>
           <div className="rise mt-8 flex flex-wrap items-center justify-center gap-3" style={{ animationDelay: '240ms' }}>
-            <a href="#install" className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink shadow-bar transition-colors hover:bg-accent-press"><IconDownload /> Download the extension</a>
+            <a href="/login" className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink shadow-bar transition-colors hover:bg-accent-press">Try now, it's free</a>
             <a href="#how" className="rounded-full border border-line bg-surface px-5 py-3 text-[0.9375rem] font-medium text-ink-dim transition-colors hover:text-ink">See how it works</a>
           </div>
           <div className="rise mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[0.8125rem] text-ink-mute" style={{ animationDelay: '300ms' }}>
