@@ -1,6 +1,10 @@
 -- Replace the old 4-arg create_tag (from 0003) with the 5-arg version.
 drop function if exists create_tag(text, jsonb, text, text);
 
+-- search_path includes `extensions`: create_project calls gen_token(), a plain
+-- SQL function (not SECURITY DEFINER) that inlines gen_random_bytes() from
+-- pgcrypto, which Supabase installs in the `extensions` schema. With `public`
+-- only, the call fails ("gen_random_bytes does not exist"). Required in prod too.
 create function create_project(p_name text, p_site_url text)
 returns table(slug text, project_key text)
 language plpgsql security definer set search_path = public, extensions as $$
