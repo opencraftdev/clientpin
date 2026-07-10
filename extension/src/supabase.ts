@@ -6,10 +6,12 @@ export const sb = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY,
 )
 
-export async function createProject(name: string, siteUrl: string) {
-  const { data, error } = await sb.rpc('create_project', { p_name: name, p_site_url: siteUrl })
+export async function connectProject(projectKey: string) {
+  const { data, error } = await sb.rpc('connect_project', { p_project_key: projectKey })
   if (error) throw new Error(error.message)
-  return (Array.isArray(data) ? data[0] : data) as { slug: string; project_key: string }
+  const row = Array.isArray(data) ? data[0] : data
+  if (!row) throw new Error('Project not found')
+  return { name: row.name as string, slug: row.slug as string, project_key: projectKey }
 }
 
 export async function createTag(
