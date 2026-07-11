@@ -18,7 +18,7 @@ const T = [
   { fg: 'var(--color-resolved)', soft: 'var(--color-resolved-soft)' },
 ]
 
-const DOWNLOAD = 'https://drive.google.com/uc?export=download&id=1BdGhCMq_RWir4spB-5xST8w8hs-ptkpi'
+const DOWNLOAD = 'https://drive.google.com/uc?export=download&id=1XHm9djpq5ZNtRk7Z-SxFeykEQgx6xr8n'
 
 const PROMPT = `Fix this UI issue on /checkout:
 Problem: "Button text overflows on mobile"
