@@ -103,7 +103,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
               <div className="mt-4 rounded-xl border border-dashed border-line px-6 py-10 text-center">
                 <p className="text-[0.9375rem] font-medium text-ink">No QA tags yet</p>
                 <p className="mt-1 text-[0.8125rem] text-ink-dim">Install the ClientPin extension, paste the connect code, and tag components on your site.</p>
-                <a href="https://drive.google.com/uc?export=download&id=1BdGhCMq_RWir4spB-5xST8w8hs-ptkpi" target="_blank" rel="noreferrer" className="mt-4 inline-block rounded-full bg-accent px-4 py-2 text-[0.8125rem] font-medium text-accent-ink">Install the extension</a>
+                <a href="https://drive.google.com/uc?export=download&id=1XHm9djpq5ZNtRk7Z-SxFeykEQgx6xr8n" target="_blank" rel="noreferrer" className="mt-4 inline-block rounded-full bg-accent px-4 py-2 text-[0.8125rem] font-medium text-accent-ink">Install the extension</a>
               </div>
             )}
           </section>
