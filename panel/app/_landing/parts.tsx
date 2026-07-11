@@ -4,7 +4,7 @@ import type { ReactNode } from 'react'
 export function Pin({ size = 22, className = '' }: { size?: number; className?: string }) {
   return (
     <svg width={size} height={(size * 32) / 24} viewBox="0 0 24 32" className={className} aria-hidden>
-      <path d="M12 0C5.4 0 0 5.4 0 12c0 8.5 12 20 12 20s12-11.5 12-20C24 5.4 18.6 0 12 0z" fill="var(--color-accent)" />
+      <path d="M12 0C5.4 0 0 5.4 0 12c0 8.5 12 20 12 20s12-11.5 12-20C24 5.4 18.6 0 12 0z" fill="var(--color-pin)" />
       <circle cx="12" cy="12" r="4.4" fill="var(--color-surface)" />
     </svg>
   )
@@ -17,7 +17,7 @@ export function Logo({ size = 28, word = true }: { size?: number; word?: boolean
       <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden>
         <rect width="32" height="32" rx="8.5" fill="var(--color-accent)" />
         <path d="M16 7c-3.4 0-6.2 2.7-6.2 6.1 0 4.4 6.2 10 6.2 10s6.2-5.6 6.2-10C22.2 9.7 19.4 7 16 7z" fill="var(--color-surface)" />
-        <circle cx="16" cy="13" r="2.5" fill="var(--color-accent)" />
+        <circle cx="16" cy="13" r="2.5" fill="var(--color-pin)" />
       </svg>
       {word && <span className="font-display text-[1.05rem] font-bold tracking-tight text-ink">ClientPin</span>}
     </span>

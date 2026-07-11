@@ -1,4 +1,3 @@
-import { Bricolage_Grotesque, Hanken_Grotesk, JetBrains_Mono } from 'next/font/google'
 import { Nav } from './_landing/Nav'
 import { Reveal } from './_landing/Reveal'
 import { CopyPrompt } from './_landing/CopyPrompt'
@@ -7,18 +6,14 @@ import {
   IconDownload, IconCamera, IconLocate, IconLink, IconShield, IconSparkle, IconCheck, IconClock,
 } from './_landing/parts'
 
-const display = Bricolage_Grotesque({ subsets: ['latin'], weight: ['600', '700', '800'], variable: '--font-bricolage' })
-const body = Hanken_Grotesk({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-hanken' })
-const codeFont = JetBrains_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-jb' })
-
-// blue / amber / green — the product's own triad, used to color sections
+// vermilion / cobalt / green — the product's own triad, used to color sections
 const T = [
   { fg: 'var(--color-progress)', soft: 'var(--color-progress-soft)' },
   { fg: 'var(--color-new)', soft: 'var(--color-new-soft)' },
   { fg: 'var(--color-resolved)', soft: 'var(--color-resolved-soft)' },
 ]
 
-const DOWNLOAD = 'https://drive.google.com/uc?export=download&id=1BdGhCMq_RWir4spB-5xST8w8hs-ptkpi'
+const DOWNLOAD = 'https://drive.google.com/uc?export=download&id=1XHm9djpq5ZNtRk7Z-SxFeykEQgx6xr8n'
 
 const PROMPT = `Fix this UI issue on /checkout:
 Problem: "Button text overflows on mobile"
@@ -53,19 +48,20 @@ const FAQ = [
 
 export default function Landing() {
   return (
-    <div id="top" className={`${display.variable} ${body.variable} ${codeFont.variable} font-body min-h-screen overflow-x-hidden bg-bg text-ink`}>
+    <div id="top" className="font-body min-h-screen overflow-x-hidden bg-bg text-ink">
       <Nav />
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div aria-hidden className="pointer-events-none absolute inset-0 bg-[url('/hero-bg.svg')] bg-cover bg-top" />
-        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 52%, var(--color-bg))' }} />
+        <div aria-hidden className="grid-dots pointer-events-none absolute inset-0" />
+        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(60% 42% at 50% 0%, var(--color-accent-soft), transparent 70%)' }} />
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-40" style={{ background: 'linear-gradient(to bottom, transparent, var(--color-bg))' }} />
         <div className="relative mx-auto max-w-3xl px-6 pt-16 text-center lg:pt-24">
-          <p className="rise mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-[0.75rem] text-ink-dim" style={{ animationDelay: '0ms' }}>
+          <p className="rise mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface/80 px-3 py-1 text-[0.75rem] text-ink-dim backdrop-blur-sm" style={{ animationDelay: '0ms' }}>
             <Pin size={13} /> Chrome extension for UI QA and client feedback
           </p>
           <h1 className="rise font-display font-extrabold leading-[0.95] tracking-[-0.03em]" style={{ fontSize: 'clamp(2.9rem, 7vw, 5.25rem)', animationDelay: '80ms' }}>
-            Point at the bug.<br /><span className="text-accent">Pin it.</span> Share it.
+            Point at the bug.<br /><span className="text-pin">Pin it.</span> Share it.
           </h1>
           <p className="rise mx-auto mt-6 max-w-xl text-[1.125rem] leading-relaxed text-ink-dim" style={{ animationDelay: '160ms' }}>
             Tag UI issues on any live site just by clicking the element. Every pin becomes a screenshot, a status, and an AI-fix prompt, shared as one link.
@@ -82,7 +78,10 @@ export default function Landing() {
         </div>
         {/* Concrete product shot */}
         <div className="relative mx-auto mt-14 max-w-4xl px-6">
-          <div className="rise" style={{ animationDelay: '380ms' }}><ListPreview /></div>
+          <div className="rise reg-marks relative shadow-lift rounded-2xl" style={{ animationDelay: '380ms' }}>
+            <span aria-hidden className="pin-drop absolute -left-2 -top-4 z-10 drop-shadow-sm" style={{ animationDelay: '620ms' }}><Pin size={30} /></span>
+            <ListPreview />
+          </div>
         </div>
         {/* Powered by */}
         <div className="relative mx-auto max-w-4xl px-6 pb-12 pt-6 text-center">
