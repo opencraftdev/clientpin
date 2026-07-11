@@ -3,7 +3,8 @@ import { useState, useTransition } from 'react'
 import { createProject, type Milestone } from './actions'
 import { CopyField } from './CopyField'
 
-const field = 'ring-accent w-full rounded-lg border border-line bg-surface px-3 py-2 text-[0.875rem] focus:border-accent focus:outline-none'
+const field = 'ring-accent w-full rounded-xl border border-line bg-surface px-3.5 py-2.5 text-[0.875rem] transition-colors focus:border-accent focus:outline-none'
+const labelText = 'text-[0.75rem] font-semibold uppercase tracking-wide text-ink-dim'
 
 // ponytail: module-scope counter; deterministic 'm0' for initial SSR row, crypto.randomUUID() only at click time
 let seq = 0
@@ -24,8 +25,13 @@ export function OnboardingForm() {
     const base = typeof window !== 'undefined' ? window.location.origin : ''
     return (
       <div className="flex flex-col gap-4">
-        <div><h2 className="text-[1.25rem] font-semibold text-ink">Project created</h2>
-          <p className="mt-1 text-[0.875rem] text-ink-dim">Share the link (with the password) and give the connect code to whoever installs the extension.</p></div>
+        <div className="flex items-center gap-2.5">
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-resolved-soft text-resolved">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12l4.5 4.5L19 7" /></svg>
+          </span>
+          <h2 className="font-display text-[1.375rem] font-bold tracking-tight text-ink">Project created</h2>
+        </div>
+        <p className="text-[0.9375rem] text-ink-dim">Share the link (with the password) and give the connect code to whoever installs the extension.</p>
         <CopyField label="Public link" value={`${base}/${result.slug}`} />
         <CopyField label="Connect code (for the extension)" value={result.project_key} />
       </div>
@@ -44,19 +50,19 @@ export function OnboardingForm() {
 
   return (
     <div className="flex flex-col gap-4">
-      <label className="flex flex-col gap-1"><span className="text-[0.75rem] font-medium text-ink-dim">Project name *</span>
+      <label className="flex flex-col gap-1"><span className={labelText}>Project name *</span>
         <input className={field} value={name} onChange={(e) => setName(e.target.value)} placeholder="Acme Store" /></label>
-      <label className="flex flex-col gap-1"><span className="text-[0.75rem] font-medium text-ink-dim">Description</span>
+      <label className="flex flex-col gap-1"><span className={labelText}>Description</span>
         <textarea className={field} rows={3} value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="What is this project?" /></label>
 
       <div>
-        <span className="text-[0.75rem] font-medium text-ink-dim">Milestones (optional)</span>
+        <span className={labelText}>Milestones (optional)</span>
         <div className="mt-1 flex flex-col gap-2">
           {milestones.map((m, i) => (
             <div key={m.id} className="flex gap-2">
               <input className={field} value={m.name} placeholder={`Milestone ${i + 1}`}
                 onChange={(e) => setMilestones(milestones.map((x) => x.id === m.id ? { ...x, name: e.target.value } : x))} />
-              <select className="ring-accent rounded-lg border border-line bg-surface px-2 text-[0.8125rem]" value={m.status}
+              <select className="ring-accent rounded-xl border border-line bg-surface px-2 text-[0.8125rem]" value={m.status}
                 onChange={(e) => setMilestones(milestones.map((x) => x.id === m.id ? { ...x, status: e.target.value as Milestone['status'] } : x))}>
                 <option value="waiting">Waiting</option><option value="in_progress">In progress</option><option value="done">Done</option>
               </select>
@@ -67,16 +73,16 @@ export function OnboardingForm() {
         </div>
       </div>
 
-      <label className="flex flex-col gap-1"><span className="text-[0.75rem] font-medium text-ink-dim">GitHub link (optional)</span>
+      <label className="flex flex-col gap-1"><span className={labelText}>GitHub link (optional)</span>
         <input className={field} value={github} onChange={(e) => setGithub(e.target.value)} placeholder="https://github.com/..." /></label>
-      <label className="flex flex-col gap-1"><span className="text-[0.75rem] font-medium text-ink-dim">Site URL (optional)</span>
+      <label className="flex flex-col gap-1"><span className={labelText}>Site URL (optional)</span>
         <input className={field} value={site} onChange={(e) => setSite(e.target.value)} placeholder="https://acme.store" /></label>
-      <label className="flex flex-col gap-1"><span className="text-[0.75rem] font-medium text-ink-dim">View password *</span>
+      <label className="flex flex-col gap-1"><span className={labelText}>View password *</span>
         <input className={field} type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Clients enter this to view the link" /></label>
 
       {err && <p className="text-[0.8125rem]" style={{ color: 'var(--color-danger)' }}>{err}</p>}
       <button onClick={submit} disabled={pending}
-        className="ring-accent rounded-lg bg-accent px-5 py-2.5 text-[0.9375rem] font-semibold text-accent-ink shadow-bar disabled:opacity-60">
+        className="ring-accent mt-1 rounded-xl bg-accent px-5 py-3 text-[0.9375rem] font-semibold text-accent-ink shadow-bar transition-colors hover:bg-accent-press disabled:opacity-60">
         {pending ? 'Creating…' : 'Create project'}
       </button>
     </div>
