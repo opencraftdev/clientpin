@@ -1,147 +1,123 @@
 import { Nav } from './_landing/Nav'
 import { Reveal } from './_landing/Reveal'
-import { CopyPrompt } from './_landing/CopyPrompt'
-import {
-  Pin, Logo, ListPreview, Thumb, StatusChip,
-  IconDownload, IconCamera, IconLocate, IconLink, IconShield, IconSparkle, IconCheck, IconClock,
-} from './_landing/parts'
-
-// vermilion / cobalt / green — the product's own triad, used to color sections
-const T = [
-  { fg: 'var(--color-progress)', soft: 'var(--color-progress-soft)' },
-  { fg: 'var(--color-new)', soft: 'var(--color-new-soft)' },
-  { fg: 'var(--color-resolved)', soft: 'var(--color-resolved-soft)' },
-]
+import { Pin, Logo, ListPreview, IconDownload, IconCheck, IconClock } from './_landing/parts'
+import { TagDemo, Pipeline, LocateShot, FixShot, ShareShot } from './_landing/Demos'
+import type { ReactNode } from 'react'
 
 const DOWNLOAD = 'https://drive.google.com/uc?export=download&id=1XHm9djpq5ZNtRk7Z-SxFeykEQgx6xr8n'
 
-const PROMPT = `Fix this UI issue on /checkout:
-Problem: "Button text overflows on mobile"
-Element: <button.cta>`
-
-const STEPS = [
-  { t: 'Tag it in a click', d: 'Turn on tag mode, hover to highlight the exact component, click it, and leave a comment in the bubble.', c: T[1],
-    v: (<div className="relative w-fit"><span className="rounded-md bg-accent px-4 py-1.5 text-[0.7rem] font-semibold text-accent-ink outline outline-2 outline-offset-2" style={{ outlineColor: 'var(--color-accent)' }}>Checkout</span><span className="absolute -right-2 -top-3"><Pin size={16} /></span></div>) },
-  { t: 'Get a shareable list', d: 'ClientPin captures a screenshot and the element location, then turns your project into one public link. No accounts for viewers.', c: T[0],
-    v: (<div className="w-full space-y-1.5">{[0, 1].map((i) => (<div key={i} className="flex items-center gap-2 rounded-md border border-line bg-bg px-2 py-1.5"><span className="h-4 w-6 rounded bg-surface-2" /><span className="h-1.5 flex-1 rounded-full bg-line" /><span className="h-1.5 w-8 rounded-full" style={{ background: i ? 'var(--color-resolved)' : 'var(--color-new)' }} /></div>))}</div>) },
-  { t: 'Fix and resolve', d: 'Anyone jumps to the live element, moves each item through its status, and copies an AI-fix prompt. Lists auto-delete in 7 days.', c: T[2],
-    v: (<div className="flex flex-wrap items-center gap-1.5"><StatusChip status="new" /><span className="text-ink-mute">→</span><StatusChip status="resolved" /></div>) },
-]
-
-const FEATURES = [
-  { icon: <IconCamera />, t: 'Pinpoint screenshots', d: 'Every tag captures a cropped image of the exact component, not the whole page.', c: T[0], v: <div className="flex justify-center pt-1"><Thumb kind="button" /></div> },
-  { icon: <IconLocate />, t: 'Jump to the live element', d: 'Click a pin to open the page and scroll straight to the component it marks.', c: T[1], v: <div className="flex items-center gap-2 pt-1"><span style={{ color: 'var(--color-new)' }}><Pin size={16} /></span><span className="h-2 flex-1 rounded-full bg-line" /></div> },
-  { icon: <IconCheck />, t: 'A status for every pin', d: 'Move items New to In progress to Resolved. Anyone with the link can update.', c: T[2], v: <div className="flex flex-wrap gap-1.5 pt-1"><StatusChip status="new" /><StatusChip status="in_progress" /><StatusChip status="resolved" /></div> },
-  { icon: <IconSparkle />, t: 'One-click AI-fix prompts', d: 'Copy a ready-to-paste prompt with the comment, selector, and page baked in.', c: T[0], v: (<div className="rounded-lg border border-line bg-bg p-2.5"><div className="flex justify-end"><CopyPrompt text={PROMPT} /></div><pre className="font-code mt-1 overflow-hidden text-[0.65rem] leading-relaxed text-ink-dim">{PROMPT}</pre></div>) },
-  { icon: <IconLink />, t: 'Share by link, no accounts', d: 'Send one URL. Clients and developers just open it, nothing to sign up for.', c: T[1], v: <div className="font-code inline-flex items-center rounded-lg border border-line bg-bg px-3 py-1.5 text-[0.7rem] text-ink-dim">clientpin.app/<span style={{ color: 'var(--color-accent)' }}>HDc7dS5F2s</span></div> },
-  { icon: <IconShield />, t: 'Private, gone in 7 days', d: 'Lists are reachable only by their link and auto-delete after a week of inactivity.', c: T[2], v: <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.75rem] font-medium" style={{ backgroundColor: 'var(--color-resolved-soft)', color: 'var(--color-resolved)' }}><IconClock /> Expires in 7 days</span> },
-]
-
-const FAQ = [
-  ['Is it free?', 'Yes. ClientPin is free to install and use. There are no accounts and no paywall.'],
-  ['Do I or my clients need an account?', 'No. You create projects from the extension, and anyone with a list link can view it and change statuses.'],
+const FAQ: [string, string][] = [
+  ['Is it free?', 'Yes. ClientPin is free to install and use. No accounts for viewers, no paywall.'],
+  ['Do my clients need an account?', 'No. You create projects from the extension; anyone with the list link and its password can view it and change statuses.'],
   ['What data is stored?', 'Only what you tag: the comment, a screenshot of the component, its page URL, and its location on the page.'],
-  ['Why is it not on the Chrome Web Store yet?', 'It is in review. For now you install the build directly, which takes about a minute. See the steps above.'],
-  ['What happens after 7 days?', 'A list is deleted 7 days after its last activity, including its screenshots. Add or update a tag to keep it alive.'],
+  ['What happens after 7 days?', 'A list is deleted 7 days after its last activity, including its screenshots. Add or update a pin to keep it alive.'],
   ['Which browsers work?', 'Any Chromium browser: Chrome, Edge, Brave, Arc, and Opera.'],
 ]
+
+// Alternating product-showcase row: a live mock on one side, a few words on the other.
+function Showcase({ eyebrow, title, body, visual, flip }: { eyebrow: string; title: string; body: string; visual: ReactNode; flip?: boolean }) {
+  return (
+    <Reveal>
+      <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
+        <div className={flip ? 'lg:order-2' : ''}>
+          <p className="font-code text-[0.75rem] font-semibold uppercase tracking-wide text-accent">{eyebrow}</p>
+          <h3 className="font-display mt-2 text-[1.75rem] font-bold leading-tight tracking-[-0.02em]">{title}</h3>
+          <p className="mt-3 max-w-md text-[1rem] leading-relaxed text-ink-dim">{body}</p>
+        </div>
+        <div className={flip ? 'lg:order-1' : ''}>{visual}</div>
+      </div>
+    </Reveal>
+  )
+}
 
 export default function Landing() {
   return (
     <div id="top" className="font-body min-h-screen overflow-x-hidden bg-bg text-ink">
       <Nav />
 
-      {/* Hero */}
+      {/* Hero — the product does the talking */}
       <section className="relative overflow-hidden">
         <div aria-hidden className="grid-dots pointer-events-none absolute inset-0" />
-        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(60% 42% at 50% 0%, var(--color-accent-soft), transparent 70%)' }} />
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-40" style={{ background: 'linear-gradient(to bottom, transparent, var(--color-bg))' }} />
+        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(55% 40% at 50% 0%, var(--color-accent-soft), transparent 70%)' }} />
         <div className="relative mx-auto max-w-3xl px-6 pt-16 text-center lg:pt-24">
           <p className="rise mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface/80 px-3 py-1 text-[0.75rem] text-ink-dim backdrop-blur-sm" style={{ animationDelay: '0ms' }}>
             <Pin size={13} /> Chrome extension for UI QA and client feedback
           </p>
-          <h1 className="rise font-display font-extrabold leading-[0.95] tracking-[-0.03em]" style={{ fontSize: 'clamp(2.9rem, 7vw, 5.25rem)', animationDelay: '80ms' }}>
-            Point at the bug.<br /><span className="text-pin">Pin it.</span> Share it.
+          <h1 className="rise font-display font-extrabold leading-[0.95] tracking-[-0.03em]" style={{ fontSize: 'clamp(2.6rem, 6.5vw, 4.75rem)', animationDelay: '80ms' }}>
+            Point at the bug.<br /><span className="text-accent">Pin it.</span> Share it.
           </h1>
           <p className="rise mx-auto mt-6 max-w-xl text-[1.125rem] leading-relaxed text-ink-dim" style={{ animationDelay: '160ms' }}>
-            Tag UI issues on any live site just by clicking the element. Every pin becomes a screenshot, a status, and an AI-fix prompt, shared as one link.
+            Turn on tag mode, click the exact element on any live site, and leave a comment. Every pin becomes a screenshot, a status, and an AI-fix prompt, shared as one link.
           </p>
           <div className="rise mt-8 flex flex-wrap items-center justify-center gap-3" style={{ animationDelay: '240ms' }}>
-            <a href="/login" className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink shadow-bar transition-colors hover:bg-accent-press">Try now, it's free</a>
+            <a href="/login" className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink shadow-bar transition-colors hover:bg-accent-press">Try now, it&apos;s free</a>
             <a href="#how" className="rounded-full border border-line bg-surface px-5 py-3 text-[0.9375rem] font-medium text-ink-dim transition-colors hover:text-ink">See how it works</a>
           </div>
           <div className="rise mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[0.8125rem] text-ink-mute" style={{ animationDelay: '300ms' }}>
-            {['Free', 'No account', 'Works in Chrome, Edge, Brave'].map((t) => (
+            {['Free', 'No account for viewers', 'Works in Chrome, Edge, Brave'].map((t) => (
               <span key={t} className="inline-flex items-center gap-1.5"><span className="text-accent"><IconCheck /></span> {t}</span>
             ))}
           </div>
         </div>
-        {/* Concrete product shot */}
+        {/* The money shot: tag mode, live */}
         <div className="relative mx-auto mt-14 max-w-4xl px-6">
-          <div className="rise reg-marks relative shadow-lift rounded-2xl" style={{ animationDelay: '380ms' }}>
-            <span aria-hidden className="pin-drop absolute -left-2 -top-4 z-10 drop-shadow-sm" style={{ animationDelay: '620ms' }}><Pin size={30} /></span>
-            <ListPreview />
-          </div>
+          <div className="rise reg-marks rounded-2xl" style={{ animationDelay: '380ms' }}><TagDemo /></div>
         </div>
-        {/* Powered by */}
         <div className="relative mx-auto max-w-4xl px-6 pb-12 pt-6 text-center">
-          <a href="https://ocraft.id/" target="_blank" rel="noreferrer noopener"
-             className="inline-flex items-center gap-1.5 text-[0.8125rem] text-ink-mute transition-colors hover:text-ink-dim">
+          <a href="https://ocraft.id/" target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1.5 text-[0.8125rem] text-ink-mute transition-colors hover:text-ink-dim">
             Powered by <span className="font-semibold text-ink-dim">Opencraft</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M7 17L17 7M9 7h8v8" /></svg>
           </a>
         </div>
       </section>
 
-      {/* How it works */}
+      {/* How it works — the pipeline, shown not told */}
       <section id="how" className="scroll-mt-16 border-t border-line bg-surface-2">
         <div className="mx-auto max-w-6xl px-6 py-24">
           <Reveal className="text-center">
             <p className="font-code text-[0.8rem] font-medium text-accent">HOW IT WORKS</p>
-            <h2 className="mx-auto mt-2 max-w-2xl font-display font-bold leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Three steps, one link.</h2>
+            <h2 className="mx-auto mt-2 max-w-2xl font-display font-bold leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>From click to shareable list.</h2>
           </Reveal>
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {STEPS.map((s, i) => (
-              <Reveal key={i} delay={i * 80}>
-                <div className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6 shadow-card">
-                  <div className="flex items-center gap-3">
-                    <span className="grid h-9 w-9 place-items-center rounded-full text-[0.9rem] font-bold font-display" style={{ backgroundColor: s.c.soft, color: s.c.fg }}>{i + 1}</span>
-                    <h3 className="text-[1.125rem] font-semibold tracking-tight">{s.t}</h3>
-                  </div>
-                  <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-dim">{s.d}</p>
-                  <div className="mt-5 flex min-h-[72px] items-center rounded-xl border border-line p-4" style={{ backgroundColor: s.c.soft }}>{s.v}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <Reveal delay={120}><p className="mt-6 flex items-center justify-center gap-2 text-[0.8125rem] text-ink-mute"><IconClock /> Lists auto-delete 7 days after the last activity, so nothing lingers.</p></Reveal>
+          <div className="mt-14"><Reveal><Pipeline /></Reveal></div>
+          <Reveal delay={120}><p className="mt-8 flex items-center justify-center gap-2 text-[0.8125rem] text-ink-mute"><IconClock /> Lists auto-delete 7 days after the last activity, so nothing lingers.</p></Reveal>
         </div>
       </section>
 
-      {/* Features */}
+      {/* Showcase rows — each feature is a real product frame */}
       <section id="features" className="scroll-mt-16 border-t border-line">
-        <div className="mx-auto max-w-6xl px-6 py-24">
-          <Reveal className="text-center">
-            <p className="font-code text-[0.8rem] font-medium text-accent">FEATURES</p>
-            <h2 className="mx-auto mt-2 max-w-2xl font-display font-bold leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Everything a good bug report needs.</h2>
+        <div className="mx-auto flex max-w-6xl flex-col gap-20 px-6 py-24">
+          <Showcase
+            eyebrow="The result"
+            title="Every pin lands in one shareable list."
+            body="Screenshot, comment, page, and element location for each issue, in a single link your clients and developers just open. No sign-up on their side."
+            visual={<ListPreview />} />
+          <Showcase flip
+            eyebrow="Triage + AI"
+            title="A status for every pin, and a one-click AI fix."
+            body="Move each item from New to In progress to Resolved. Copy a ready-to-paste prompt with the comment, selector, and page baked in."
+            visual={<FixShot />} />
+          <Showcase
+            eyebrow="Locate"
+            title="Jump straight to the live element."
+            body="Click a pin to open the page and scroll right to the component it marks, highlighted, so there is never any guessing about which thing you meant."
+            visual={<LocateShot />} />
+        </div>
+      </section>
+
+      {/* Privacy band */}
+      <section className="border-t border-line bg-surface-2">
+        <div className="mx-auto grid max-w-5xl items-center gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr]">
+          <Reveal>
+            <p className="font-code text-[0.8rem] font-medium text-accent">PRIVATE BY DEFAULT</p>
+            <h2 className="mt-2 font-display font-bold leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>One private link. Gone in 7 days.</h2>
+            <p className="mt-3 max-w-md text-[1rem] leading-relaxed text-ink-dim">Lists are reachable only by their link and its password, and auto-delete a week after the last activity. Nothing to clean up.</p>
           </Reveal>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {FEATURES.map((f, i) => (
-              <Reveal key={i} delay={(i % 3) * 70}>
-                <div className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6 shadow-card">
-                  <span className="grid h-11 w-11 place-items-center rounded-xl" style={{ backgroundColor: f.c.soft, color: f.c.fg }}>{f.icon}</span>
-                  <h3 className="mt-4 text-[1.125rem] font-semibold tracking-tight">{f.t}</h3>
-                  <p className="mt-1.5 text-[0.9rem] leading-relaxed text-ink-dim">{f.d}</p>
-                  <div className="mt-5 flex flex-1 items-end">{f.v}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal delay={80}><ShareShot /></Reveal>
         </div>
       </section>
 
       {/* Install */}
-      <section id="install" className="scroll-mt-16 border-t border-line bg-surface-2">
+      <section id="install" className="scroll-mt-16 border-t border-line">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-14 px-6 py-24 lg:grid-cols-[1fr_1.1fr]">
           <Reveal>
             <p className="font-code text-[0.8rem] font-medium text-accent">INSTALL</p>
@@ -157,7 +133,7 @@ export default function Landing() {
                 <>Open <code className="font-code rounded bg-surface-2 px-1.5 py-0.5 text-accent">chrome://extensions</code> in your browser.</>,
                 <>Turn on <b className="font-semibold text-ink">Developer mode</b> (toggle, top right).</>,
                 <>Click <b className="font-semibold text-ink">Load unpacked</b> and select the <code className="font-code">clientpin</code> folder.</>,
-                <>Pin ClientPin to your toolbar, open it, and create your first project.</>,
+                <>Pin ClientPin to your toolbar, open it, and connect your first project.</>,
               ].map((step, i) => (
                 <li key={i} className="flex items-start gap-4 rounded-xl border border-line bg-surface p-4 shadow-card">
                   <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-accent text-[0.8125rem] font-semibold text-accent-ink">{i + 1}</span>
@@ -170,7 +146,7 @@ export default function Landing() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="scroll-mt-16 border-t border-line">
+      <section id="faq" className="scroll-mt-16 border-t border-line bg-surface-2">
         <div className="mx-auto max-w-3xl px-6 py-24">
           <Reveal><h2 className="text-center font-display font-bold leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(2rem, 4vw, 2.75rem)' }}>Questions, answered.</h2></Reveal>
           <div className="mt-10 flex flex-col gap-3">
@@ -186,7 +162,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Final CTA */}
+      {/* Final CTA — the one deliberate coral drench */}
       <section className="bg-accent">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-16 md:flex-row md:items-center md:justify-between">
           <div>
