@@ -9,7 +9,7 @@ One design system across two registers:
 
 ClientPin pins a bug to an **exact element on an exact page**. The whole product is about precise location, coordinates, and a physical marker dropped on a surface. So the interface is a **drafting table / survey instrument**, not another grey admin console.
 
-Concretely that means: a warm paper canvas, ink-dark structural type, hairline rules and a faint blueprint grid, coordinate-style mono labels, corner registration marks on key surfaces, and one signature motif, the **pin**, rendered as a real map-marker in vermilion. Cobalt carries structure and action; vermilion is the marker, the attention, the "this needs a look."
+Concretely that means: a warm, airy near-white canvas, ink-dark structural type, hairline rules and a faint blueprint grid, coordinate-style mono labels, corner registration marks on key surfaces, and one signature motif, the **pin**, rendered as a real map-marker. The pin's own **coral/vermilion is promoted to the primary brand color**: it carries the brand, the actions, the active step, the progress. Cobalt drops back to a single job, the "in progress" working state. One warm accent doing all the work on generous whitespace, calm but confident, the way a premium onboarding feels.
 
 This is deliberately **not** the two reflex answers for a QA/bug tool: not the dark developer console, and not Google-Admin Material blue-on-grey (which is what the previous version was). It is also specific enough, drafting and survey, that it does not collapse into generic "editorial grotesque."
 
@@ -21,55 +21,62 @@ Same tokens, type, and motifs everywhere. The landing may go **Committed** with 
 
 ## Theme
 
-**Light, warm paper.** Scene: a QA lead and a non-engineer client reviewing bug pins together in normal office light, wanting to read comments and see screenshots clearly. That forces light. But warm, not the cool clinical grey of the old Material build: a faint ivory canvas that reads like drafting paper, so the tool has a point of view instead of defaulting to "safe white."
+**Light, high-contrast editorial.** Scene: a QA lead and a non-engineer client reviewing bug pins together in normal office light, wanting to read comments and see screenshots clearly. That forces light. The treatment is **editorial / magazine**: a stark near-white canvas, near-black ink, definition from **strong hairline rules rather than soft shadows**, oversized tight display type, and coral used sharply. Corners are crisp (radius 1-3px), not soft. One signature depth cue: a hard offset shadow (`.shadow-edge`) that makes hero frames feel printed and pasted on.
+
+## Edges, rules & type (editorial)
+
+- **Corners:** near-sharp. `--radius-*` is globally reduced to 1-3px; true circles (`rounded-full`) are untouched, so pins, dots, and the progress ring stay round.
+- **Definition:** ink hairline rules and full borders, not blur. `--shadow-card` is nearly flat. Use `border`, section `border-t`, and `.ruler` ticks to divide.
+- **Type:** display goes big and tight (`tracking-[-0.03em]`, uppercase for the hero and eyebrows). Mono (JetBrains) carries eyebrows, labels, and coordinates in uppercase.
+- **Signature:** `.shadow-edge` / `.shadow-edge-accent` (a 5px hard offset in ink or coral) on the hero product frame and key CTAs. Sparingly.
 
 ## Color — OKLCH
 
-Never `#000`/`#fff`. Neutrals tinted **warm** (hue ~85); ink tinted **indigo** (hue ~275) so text sits as deep blue-black on warm paper, a quiet complementary tension. Strategy: **Restrained** in the app (paper + ink + one cobalt accent, vermilion as the sharp <10% marker); **Committed** allowed on the landing.
+Never `#000`/`#fff`. Neutrals tinted faintly **warm** (hue ~80), brighter and airier than the old ivory; ink tinted **indigo** (hue ~275) so text reads as deep blue-black, a quiet complementary tension against the warm coral. Strategy: **Restrained** everywhere, one warm coral accent on lots of whitespace. The landing may go **Committed** (drench the final CTA).
 
 ```css
-/* Warm paper neutrals */
---color-bg:        oklch(0.984 0.006 85);   /* drafting-paper canvas       */
---color-surface:   oklch(0.997 0.002 85);   /* cards, bars                 */
---color-surface-2: oklch(0.966 0.008 83);   /* inset, hover, selected      */
---color-line:      oklch(0.903 0.008 83);   /* hairline rules, borders     */
---color-line-2:    oklch(0.845 0.010 80);   /* stronger rule / tick        */
+/* Warm near-white neutrals */
+--color-bg:        oklch(0.987 0.004 80);   /* airy canvas                 */
+--color-surface:   oklch(0.998 0.001 80);   /* cards, bars                 */
+--color-surface-2: oklch(0.970 0.006 78);   /* inset, hover, selected      */
+--color-line:      oklch(0.912 0.006 78);   /* hairline rules, borders     */
+--color-line-2:    oklch(0.855 0.008 76);   /* stronger rule / tick        */
 
 /* Indigo-tinted ink */
---color-ink:       oklch(0.27 0.030 275);   /* primary text — blue-black   */
---color-ink-dim:   oklch(0.47 0.030 272);   /* secondary                   */
---color-ink-mute:  oklch(0.62 0.024 272);   /* meta, placeholder, ticks    */
+--color-ink:       oklch(0.26 0.028 275);   /* primary text — blue-black   */
+--color-ink-dim:   oklch(0.47 0.028 272);   /* secondary                   */
+--color-ink-mute:  oklch(0.63 0.022 272);   /* meta, placeholder, ticks    */
 
-/* Cobalt — structure, actions, active nav, focus, links */
---color-accent:       oklch(0.50 0.200 262);
---color-accent-press: oklch(0.43 0.190 262);
---color-accent-ink:   oklch(0.99 0.010 262);  /* text on cobalt            */
---color-accent-soft:  oklch(0.94 0.045 262);  /* selected tint             */
+/* Coral/vermilion — THE primary. Brand, actions, active step, progress, focus. */
+--color-accent:       oklch(0.635 0.190 34);
+--color-accent-press: oklch(0.565 0.180 34);
+--color-accent-ink:   oklch(0.995 0.010 60);  /* text on coral (near-white)*/
+--color-accent-soft:  oklch(0.950 0.038 45);  /* selected / eyebrow tint   */
 
-/* Vermilion — the pin, the marker, attention. Used sparingly, high impact. */
---color-pin:       oklch(0.605 0.200 32);
---color-pin-soft:  oklch(0.945 0.050 45);
+/* Pin alias — the marker glyph is the accent color. */
+--color-pin:       oklch(0.635 0.190 34);
+--color-pin-soft:  oklch(0.950 0.038 45);
 
-/* Status triad — semantic. New = live marker (vermilion), In progress =
-   working (cobalt), Resolved = done (drafting green). Soft = chip bg. */
---color-new:           oklch(0.575 0.190 33);
---color-new-soft:      oklch(0.945 0.050 42);
---color-progress:      oklch(0.50 0.180 262);
+/* Status triad — semantic. New = fresh marker (coral), In progress =
+   working (cobalt, its one remaining job), Resolved = done (green). */
+--color-new:           oklch(0.620 0.185 34);
+--color-new-soft:      oklch(0.950 0.038 42);
+--color-progress:      oklch(0.520 0.170 262);
 --color-progress-soft: oklch(0.940 0.045 262);
---color-resolved:      oklch(0.50 0.130 155);
---color-resolved-soft: oklch(0.935 0.050 150);
+--color-resolved:      oklch(0.520 0.125 155);
+--color-resolved-soft: oklch(0.935 0.048 150);
 
---color-danger:    oklch(0.53 0.210 25);
+--color-danger:    oklch(0.545 0.205 25);
 
-/* Elevation — warm, low-spread, indigo-tinted */
---shadow-card: 0 1px 2px oklch(0.27 0.03 275 / 0.07), 0 6px 16px oklch(0.27 0.03 275 / 0.05);
---shadow-bar:  0 1px 2px oklch(0.27 0.03 275 / 0.06);
---shadow-lift: 0 2px 4px oklch(0.27 0.03 275 / 0.08), 0 14px 32px oklch(0.27 0.03 275 / 0.10);
+/* Elevation — soft, low-spread, indigo-tinted (premium, barely-there) */
+--shadow-card: 0 1px 2px oklch(0.26 0.03 275 / 0.05), 0 8px 24px oklch(0.26 0.03 275 / 0.05);
+--shadow-bar:  0 1px 2px oklch(0.26 0.03 275 / 0.05);
+--shadow-lift: 0 2px 6px oklch(0.26 0.03 275 / 0.06), 0 18px 40px oklch(0.26 0.03 275 / 0.10);
 ```
 
 Rules:
-- **Cobalt = interaction only** (primary buttons, active nav, focus ring, links). Never decoration.
-- **Vermilion = the pin and "New" only.** It is the loudest thing on the page; keep it under ~10% of any view so it stays loud. Never a large fill (except the pin glyph itself).
+- **Coral = brand + interaction** (primary buttons, active step, progress ring, focus ring, links, the pin). Generous on whitespace but never a decorative fill on large neutral areas except the final landing CTA.
+- **Cobalt = "In progress" status only.** It is no longer a structural color.
 - Status renders as a **soft pill**: tinted bg + colored text + a leading dot. Never a full-row fill, never a side-stripe.
 
 ## Typography
@@ -101,7 +108,8 @@ Use these to build atmosphere without gradients or glass. Sparingly, they are se
 
 - **App shell:** content on paper canvas, one card per logical group (`--shadow-card`, radius 14px, `--color-line` hairline). Roomy padding (24-32px). Never nest cards. Data as clean rows/lists inside one card, divided by hairlines, not a grid of sub-cards.
 - **Dashboard** (`/[slug]`): keeps the left in-page nav (Sidebar) + main column. Header card carries the project identity with registration-mark corners and a large cobalt progress figure. QA pins are a hairline-divided list, each row: screenshot thumb, comment, coordinate line, status pill, AI-fix copy.
-- **Onboarding / login / gate:** single centered card on paper, generous whitespace, the pin/logo as the anchor. Not a bare form floating in space, give it a drafting card with a header.
+- **Onboarding:** a **two-pane stepper wizard** (see below), not a single long form. Full-height. Left rail = the stepper; right pane = the current step's fields with a bottom nav bar.
+- **Login / gate:** single centered card on paper, generous whitespace, the pin/logo as the anchor. Not a bare form floating in space, give it a drafting card with a header.
 - **Landing:** full-bleed sections separated by hairline rules and ruler ticks; hero over a faint grid with the product shot on `--shadow-lift`; final CTA may drench in cobalt.
 - Responsive: dashboard sidebar collapses above the content under ~768px; lists scroll; no fluid body type.
 
@@ -117,14 +125,38 @@ Use these to build atmosphere without gradients or glass. Sparingly, they are se
 - **Empty states teach** (install the extension, tag your first element), never "nothing here."
 - **Loading:** skeleton rows with the shimmer utility, not spinners.
 
+## Stepper — the onboarding wizard
+
+The CEO-requested signature component. A two-pane, full-height wizard that walks a new owner through creating their first project.
+
+**Left rail (~300px, `--color-surface`, hairline right border):**
+- Top: the **Logo** + a small **progress ring** (SVG, coral arc on `--color-line` track) reading `n/4`.
+- A rail title (`font-display`, e.g. "Set up your project") + one muted subtitle line.
+- The **step list**, vertical, each row: a numbered token (`01`–`04`) + label, joined by a thin connector line down the left of the tokens.
+  - **Done:** filled coral token with a check, ink label, connector above filled coral.
+  - **Active:** filled ink/coral token, `font-semibold` label, a soft `--color-accent-soft` rounded highlight behind the row + a trailing chevron.
+  - **Upcoming:** outlined muted token (`--color-line-2`), `--color-ink-mute` label, not clickable forward past the furthest-reached step.
+  - A visited step is clickable to go back; upcoming steps are not clickable.
+- Bottom: the user's email (mono, muted) + a quiet "Save and exit" link (returns home).
+
+**Right pane (fills remaining width, on `--color-bg`):**
+- A small coral eyebrow: `Step n / 4`.
+- Step **title** (`font-display`, ~1.75rem) + a one-to-two line description in `--color-ink-dim`.
+- The step's fields, grouped in one `--color-surface` card (`--shadow-card`, radius 16px) with numbered sub-labels when a step has parts (mirrors the reference's `01 / 02` sub-sections).
+- A **bottom nav bar** pinned below the content: a circular ghost **Back** button (‹, hidden on step 1) on the left; the primary CTA on the right (`Continue →`, or `Create project` on the last step), disabled until the step's required fields are valid.
+
+**Steps (our content):** `01 Project` (name + description) · `02 Milestones` (the milestone list) · `03 Links` (GitHub + site URL, both optional) · `04 Access` (view password). Only Project name and Access password are required. On submit of step 4 → `createProject` → the **Share** screen (a centered success card with the public link + connect code, replacing the wizard).
+
+**Behavior:** one step visible at a time; state persists across steps (no data loss navigating back); `Continue` advances and marks the step done; the ring and list update. Reduced motion: no slide, just swap.
+
 ## Motion
 
 150-220ms, **ease-out** (`cubic-bezier(0.16,1,0.3,1)`), no bounce, never animate layout properties. Uses: pin drop on hero load, staggered `rise` entrance (fill-mode both, never leaves content hidden), scroll `reveal` (visible by default, JS only enhances), nav/chip hover, status recolor, copy pulse. Respect `prefers-reduced-motion`.
 
 ## Bans (in force)
 
-No side-stripe borders. No gradient text (`background-clip:text`). No glassmorphism as decoration (the nav's scroll blur is the one intentional exception). No hero-metric template. No identical icon-card grids as the only idea. No modals for create/comment (inline / wizard). No em dashes in UI copy. No `#000`/`#fff`. Vermilion never used as a large fill.
+No side-stripe borders. No gradient text (`background-clip:text`). No glassmorphism as decoration (the nav's scroll blur is the one intentional exception). No hero-metric template. No identical icon-card grids as the only idea. No modals for create/comment (inline / wizard). No em dashes in UI copy. No `#000`/`#fff`. Coral is generous but calm, earned by whitespace, never a decorative fill on a large neutral area (the final landing CTA is the one deliberate drench).
 
 ## The slop test
 
-If someone could name the theme from the category alone ("QA tool → dark console" or "→ Google blue"), it failed. This build answers neither: warm drafting paper, indigo ink, cobalt structure, a vermilion survey pin. The specificity comes from the product's real function, precise location, not from a trend.
+If someone could name the theme from the category alone ("QA tool → dark console" or "→ Google blue"), it failed. This build answers neither: warm near-white paper, indigo ink, a coral survey-pin carrying the brand, cobalt kept only for "in progress." The specificity comes from the product's real function, precise location, and a stepper that feels like a premium setup, not from a trend.

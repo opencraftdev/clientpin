@@ -15,7 +15,7 @@ export function Logo({ size = 28, word = true }: { size?: number; word?: boolean
   return (
     <span className="inline-flex items-center gap-2">
       <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden>
-        <rect width="32" height="32" rx="8.5" fill="var(--color-accent)" />
+        <rect width="32" height="32" rx="2" fill="var(--color-accent)" />
         <path d="M16 7c-3.4 0-6.2 2.7-6.2 6.1 0 4.4 6.2 10 6.2 10s6.2-5.6 6.2-10C22.2 9.7 19.4 7 16 7z" fill="var(--color-surface)" />
         <circle cx="16" cy="13" r="2.5" fill="var(--color-pin)" />
       </svg>
@@ -48,8 +48,8 @@ type Status = keyof typeof STATUS
 export function StatusChip({ status }: { status: Status }) {
   const m = STATUS[status]
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[0.75rem] font-medium" style={{ backgroundColor: m.soft, color: m.color }}>
-      <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: m.color }} />
+    <span className="font-code inline-flex items-center gap-1.5 border px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide" style={{ backgroundColor: m.soft, color: m.color, borderColor: m.color }}>
+      <span className="h-1.5 w-1.5" style={{ backgroundColor: m.color }} />
       {m.label}
     </span>
   )
@@ -92,7 +92,7 @@ export function ListPreview() {
             <div className="font-code mt-1 text-[0.7rem] text-ink-mute">acme.store</div>
           </div>
         </div>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-2 px-3 py-1 text-[0.7rem] font-medium text-ink-dim">3 tags · expires in 6 days</span>
+        <span className="font-code inline-flex items-center gap-1.5 border border-line px-2.5 py-1 text-[0.65rem] uppercase tracking-wide text-ink-dim">3 tags · 6 days left</span>
       </div>
       {/* rows */}
       <div className="mt-3 flex flex-col divide-y divide-line px-2 pb-3">
@@ -104,7 +104,7 @@ export function ListPreview() {
               <p className="font-code mt-0.5 truncate text-[0.7rem] text-ink-mute">{r.where}</p>
             </div>
             <StatusChip status={r.status} />
-            <span className="hidden shrink-0 rounded-full bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold text-accent sm:inline">AI Fix</span>
+            <span className="font-code hidden shrink-0 border border-accent px-2 py-0.5 text-[0.62rem] font-semibold uppercase tracking-wide text-accent sm:inline">AI Fix</span>
           </div>
         ))}
       </div>
