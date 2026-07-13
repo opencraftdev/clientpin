@@ -7,12 +7,11 @@ import type { Tag } from '@/lib/types'
 import { STATUS_META } from '@/lib/types'
 import { PasswordGate } from './PasswordGate'
 import { Logo } from '../_landing/parts'
+import { InstallSteps, DownloadButton } from '../_landing/InstallSteps'
 import { Sidebar } from './Sidebar'
 import { Milestones } from './Milestones'
 import { StatusSelect } from './StatusSelect'
 import { CopyButton } from './CopyButton'
-
-const EXT_DOWNLOAD = 'https://drive.google.com/uc?export=download&id=1XHm9djpq5ZNtRk7Z-SxFeykEQgx6xr8n'
 
 function pathOf(u: string): string { try { return new URL(u).pathname } catch { return u } }
 
@@ -122,13 +121,19 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
                   ))}
                 </ul>
               ) : (
-                <div className="mt-5 rounded-xl border border-dashed border-line-2 px-6 py-12 text-center">
-                  <span className="mx-auto text-pin" style={{ display: 'inline-block' }}>
-                    <svg width="26" height="34" viewBox="0 0 24 32" aria-hidden><path d="M12 0C5.4 0 0 5.4 0 12c0 8.5 12 20 12 20s12-11.5 12-20C24 5.4 18.6 0 12 0z" fill="currentColor" /><circle cx="12" cy="12" r="4.4" fill="var(--color-surface)" /></svg>
-                  </span>
-                  <p className="mt-3 text-[0.9375rem] font-semibold text-ink">No QA pins yet</p>
-                  <p className="mx-auto mt-1 max-w-xs text-[0.8125rem] leading-relaxed text-ink-dim">Install the ClientPin extension, paste the connect code, and tag components on your site.</p>
-                  <a href={EXT_DOWNLOAD} target="_blank" rel="noreferrer" className="shadow-edge mt-5 inline-block bg-accent px-5 py-2.5 text-[0.8125rem] font-semibold text-accent-ink transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">Install the extension</a>
+                <div className="mt-5 border border-dashed border-line-2 px-6 py-10">
+                  <div className="text-center">
+                    <span className="mx-auto text-pin" style={{ display: 'inline-block' }}>
+                      <svg width="26" height="34" viewBox="0 0 24 32" aria-hidden><path d="M12 0C5.4 0 0 5.4 0 12c0 8.5 12 20 12 20s12-11.5 12-20C24 5.4 18.6 0 12 0z" fill="currentColor" /><circle cx="12" cy="12" r="4.4" fill="var(--color-surface)" /></svg>
+                    </span>
+                    <p className="mt-3 text-[0.9375rem] font-semibold text-ink">No QA pins yet</p>
+                    <p className="mx-auto mt-1 max-w-sm text-[0.8125rem] leading-relaxed text-ink-dim">Haven&apos;t installed the extension yet? It takes about a minute, works in any Chromium browser (Chrome, Edge, Brave, Arc), and is not on the Web Store yet, so you install it directly.</p>
+                    <div className="mt-5 flex justify-center"><DownloadButton /></div>
+                  </div>
+                  <div className="mx-auto mt-8 max-w-md">
+                    <p className="font-code mb-3 text-[0.65rem] font-semibold uppercase tracking-wide text-ink-mute">Then, in your browser</p>
+                    <InstallSteps />
+                  </div>
                 </div>
               )}
             </section>
