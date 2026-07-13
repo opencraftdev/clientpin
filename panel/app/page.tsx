@@ -2,9 +2,8 @@ import { Nav } from './_landing/Nav'
 import { Reveal } from './_landing/Reveal'
 import { Pin, Logo, ListPreview, IconDownload, IconCheck, IconClock } from './_landing/parts'
 import { TagDemo, Pipeline, LocateShot, FixShot, ShareShot } from './_landing/Demos'
+import { InstallSteps, DownloadButton, DOWNLOAD_URL } from './_landing/InstallSteps'
 import type { ReactNode } from 'react'
-
-const DOWNLOAD = 'https://drive.google.com/uc?export=download&id=1XHm9djpq5ZNtRk7Z-SxFeykEQgx6xr8n'
 
 const FAQ: [string, string][] = [
   ['Is it free?', 'Yes. ClientPin is free to install and use. No accounts for viewers, no paywall.'],
@@ -123,24 +122,11 @@ export default function Landing() {
             <p className="font-code text-[0.8rem] font-medium text-accent">INSTALL</p>
             <h2 className="mt-2 font-display font-bold leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Add ClientPin to your browser.</h2>
             <p className="mt-4 max-w-sm text-[1rem] leading-relaxed text-ink-dim">Not on the Chrome Web Store yet, so you install the build directly. It takes about a minute and works in any Chromium browser.</p>
-            <a href={DOWNLOAD} target="_blank" rel="noreferrer" className="shadow-edge mt-7 inline-flex items-center gap-2 bg-accent px-6 py-3.5 text-[1rem] font-semibold text-accent-ink transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none"><IconDownload /> Download ClientPin (.zip)</a>
+            <div className="mt-7"><DownloadButton /></div>
             <p className="mt-3 text-[0.8125rem] text-ink-mute">Keep the unzipped folder. Deleting it removes the extension.</p>
           </Reveal>
           <Reveal delay={100}>
-            <ol className="flex flex-col gap-3">
-              {[
-                <>Download the <code className="font-code">.zip</code> above and unzip it.</>,
-                <>Open <code className="font-code rounded bg-surface-2 px-1.5 py-0.5 text-accent">chrome://extensions</code> in your browser.</>,
-                <>Turn on <b className="font-semibold text-ink">Developer mode</b> (toggle, top right).</>,
-                <>Click <b className="font-semibold text-ink">Load unpacked</b> and select the <code className="font-code">clientpin</code> folder.</>,
-                <>Pin ClientPin to your toolbar, open it, and connect your first project.</>,
-              ].map((step, i) => (
-                <li key={i} className="flex items-start gap-4 rounded-xl border border-line bg-surface p-4 shadow-card">
-                  <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-accent text-[0.8125rem] font-semibold text-accent-ink">{i + 1}</span>
-                  <span className="pt-0.5 text-[0.9375rem] leading-relaxed text-ink-dim">{step}</span>
-                </li>
-              ))}
-            </ol>
+            <InstallSteps />
           </Reveal>
         </div>
       </section>
@@ -169,7 +155,7 @@ export default function Landing() {
             <h2 className="font-display font-bold leading-tight tracking-[-0.02em] text-accent-ink" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)' }}>Stop describing bugs. Pin them.</h2>
             <p className="mt-2 text-[1rem] text-accent-ink/85">Install ClientPin and share your first list in minutes.</p>
           </div>
-          <a href={DOWNLOAD} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-2 bg-bg px-6 py-3.5 text-[1rem] font-semibold text-accent transition-transform hover:-translate-y-0.5"><IconDownload /> Download the extension</a>
+          <a href={DOWNLOAD_URL} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-2 bg-bg px-6 py-3.5 text-[1rem] font-semibold text-accent transition-transform hover:-translate-y-0.5"><IconDownload /> Download the extension</a>
         </div>
       </section>
 
