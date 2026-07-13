@@ -101,6 +101,19 @@ body {
   background-size: 26px 26px;
 }
 
+/* Blueprint graph paper — minor + major ink rules, faded from the top-center.
+   Editorial hero backdrop. */
+.grid-blueprint {
+  background-image:
+    linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px),
+    linear-gradient(color-mix(in oklch, var(--color-line-2) 55%, transparent) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, color-mix(in oklch, var(--color-line-2) 55%, transparent) 1.5px, transparent 1.5px);
+  background-size: 34px 34px, 34px 34px, 170px 170px, 170px 170px;
+  -webkit-mask-image: radial-gradient(130% 82% at 50% -8%, #000 42%, transparent 80%);
+  mask-image: radial-gradient(130% 82% at 50% -8%, #000 42%, transparent 80%);
+}
+
 /* Registration marks — surveyor's corner crosshairs on key surfaces. */
 .reg-marks { position: relative; }
 .reg-marks::before, .reg-marks::after {

@@ -37,8 +37,8 @@ export default function Landing() {
 
       {/* Hero — the product does the talking */}
       <section className="relative overflow-hidden">
-        <div aria-hidden className="grid-dots pointer-events-none absolute inset-0" />
-        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(55% 40% at 50% 0%, var(--color-accent-soft), transparent 70%)' }} />
+        <div aria-hidden className="grid-blueprint pointer-events-none absolute inset-0" />
+        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(48% 32% at 50% -4%, var(--color-accent-soft), transparent 72%)' }} />
         <div className="relative mx-auto max-w-3xl px-6 pt-16 text-center lg:pt-24">
           <p className="font-code rise mx-auto mb-6 inline-flex items-center gap-2 border border-ink bg-surface/80 px-3 py-1 text-[0.7rem] uppercase tracking-wide text-ink-dim backdrop-blur-sm" style={{ animationDelay: '0ms' }}>
             <Pin size={13} /> Chrome extension for UI QA
