@@ -50,7 +50,7 @@ function StepList({ step, maxReached, go }: { step: number; maxReached: number; 
           <li key={s.key}>
             <button type="button" disabled={!clickable} onClick={() => clickable && go(i)}
               className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors ${state === 'active' ? 'bg-accent-soft' : clickable ? 'hover:bg-surface-2' : ''} ${clickable ? 'cursor-pointer' : 'cursor-default'}`}>
-              <span className={`font-code relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full text-[0.72rem] font-semibold ${token}`}>
+              <span className={`font-code relative z-10 grid h-8 w-8 shrink-0 place-items-center text-[0.72rem] font-semibold ${token}`}>
                 {state === 'done' ? <Check /> : `0${i + 1}`}
               </span>
               <span className={`flex-1 text-[0.875rem] ${state === 'active' ? 'font-semibold text-ink' : state === 'done' ? 'font-medium text-ink-dim' : 'text-ink-mute'}`}>{s.label}</span>
@@ -190,9 +190,9 @@ export function OnboardingWizard({ email }: { email?: string }) {
           {/* Bottom nav */}
           <div className="mt-auto flex items-center justify-between pt-10">
             <button type="button" onClick={() => go(step - 1)} disabled={step === 0}
-              className="ring-accent grid h-11 w-11 place-items-center rounded-full border border-line bg-surface text-ink-dim shadow-bar transition-colors hover:bg-surface-2 hover:text-ink disabled:invisible" aria-label="Back">‹</button>
+              className="ring-accent grid h-11 w-11 place-items-center border border-ink bg-surface text-ink transition-colors hover:bg-ink hover:text-bg disabled:invisible" aria-label="Back">‹</button>
             <button type="button" onClick={next} disabled={!canContinue || pending}
-              className="ring-accent inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink shadow-bar transition-colors hover:bg-accent-press disabled:cursor-not-allowed disabled:opacity-45">
+              className="ring-accent inline-flex items-center gap-2 bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink transition-colors hover:bg-accent-press disabled:cursor-not-allowed disabled:opacity-45">
               {step < 3 ? 'Continue →' : pending ? 'Creating…' : 'Create project'}
             </button>
           </div>

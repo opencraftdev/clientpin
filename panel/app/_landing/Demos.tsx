@@ -35,7 +35,7 @@ function Bubble() {
 /* ---------- HERO: tag mode in action on a live site ---------- */
 export function TagDemo() {
   return (
-    <BrowserFrame url="acme.store/checkout" className="shadow-lift">
+    <BrowserFrame url="acme.store/checkout" className="border-ink shadow-edge">
       <div className="relative overflow-hidden">
         {/* dimmed live site underneath (tag mode) */}
         <div className="select-none p-6 sm:p-8">

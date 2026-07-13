@@ -40,18 +40,18 @@ export default function Landing() {
         <div aria-hidden className="grid-dots pointer-events-none absolute inset-0" />
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(55% 40% at 50% 0%, var(--color-accent-soft), transparent 70%)' }} />
         <div className="relative mx-auto max-w-3xl px-6 pt-16 text-center lg:pt-24">
-          <p className="rise mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface/80 px-3 py-1 text-[0.75rem] text-ink-dim backdrop-blur-sm" style={{ animationDelay: '0ms' }}>
-            <Pin size={13} /> Chrome extension for UI QA and client feedback
+          <p className="font-code rise mx-auto mb-6 inline-flex items-center gap-2 border border-ink bg-surface/80 px-3 py-1 text-[0.7rem] uppercase tracking-wide text-ink-dim backdrop-blur-sm" style={{ animationDelay: '0ms' }}>
+            <Pin size={13} /> Chrome extension for UI QA
           </p>
-          <h1 className="rise font-display font-extrabold leading-[0.95] tracking-[-0.03em]" style={{ fontSize: 'clamp(2.6rem, 6.5vw, 4.75rem)', animationDelay: '80ms' }}>
+          <h1 className="rise font-display font-extrabold uppercase leading-[0.9] tracking-[-0.035em]" style={{ fontSize: 'clamp(2.7rem, 7vw, 5rem)', animationDelay: '80ms' }}>
             Point at the bug.<br /><span className="text-accent">Pin it.</span> Share it.
           </h1>
           <p className="rise mx-auto mt-6 max-w-xl text-[1.125rem] leading-relaxed text-ink-dim" style={{ animationDelay: '160ms' }}>
             Turn on tag mode, click the exact element on any live site, and leave a comment. Every pin becomes a screenshot, a status, and an AI-fix prompt, shared as one link.
           </p>
-          <div className="rise mt-8 flex flex-wrap items-center justify-center gap-3" style={{ animationDelay: '240ms' }}>
-            <a href="/login" className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink shadow-bar transition-colors hover:bg-accent-press">Try now, it&apos;s free</a>
-            <a href="#how" className="rounded-full border border-line bg-surface px-5 py-3 text-[0.9375rem] font-medium text-ink-dim transition-colors hover:text-ink">See how it works</a>
+          <div className="rise mt-9 flex flex-wrap items-center justify-center gap-3" style={{ animationDelay: '240ms' }}>
+            <a href="/login" className="shadow-edge inline-flex items-center gap-2 bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none">Try now, it&apos;s free</a>
+            <a href="#how" className="border border-ink bg-surface px-5 py-3 text-[0.9375rem] font-semibold text-ink transition-colors hover:bg-ink hover:text-bg">See how it works</a>
           </div>
           <div className="rise mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[0.8125rem] text-ink-mute" style={{ animationDelay: '300ms' }}>
             {['Free', 'No account for viewers', 'Works in Chrome, Edge, Brave'].map((t) => (
@@ -123,7 +123,7 @@ export default function Landing() {
             <p className="font-code text-[0.8rem] font-medium text-accent">INSTALL</p>
             <h2 className="mt-2 font-display font-bold leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Add ClientPin to your browser.</h2>
             <p className="mt-4 max-w-sm text-[1rem] leading-relaxed text-ink-dim">Not on the Chrome Web Store yet, so you install the build directly. It takes about a minute and works in any Chromium browser.</p>
-            <a href={DOWNLOAD} target="_blank" rel="noreferrer" className="mt-7 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-[1rem] font-semibold text-accent-ink shadow-bar transition-colors hover:bg-accent-press"><IconDownload /> Download ClientPin (.zip)</a>
+            <a href={DOWNLOAD} target="_blank" rel="noreferrer" className="shadow-edge mt-7 inline-flex items-center gap-2 bg-accent px-6 py-3.5 text-[1rem] font-semibold text-accent-ink transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none"><IconDownload /> Download ClientPin (.zip)</a>
             <p className="mt-3 text-[0.8125rem] text-ink-mute">Keep the unzipped folder. Deleting it removes the extension.</p>
           </Reveal>
           <Reveal delay={100}>
@@ -169,7 +169,7 @@ export default function Landing() {
             <h2 className="font-display font-bold leading-tight tracking-[-0.02em] text-accent-ink" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)' }}>Stop describing bugs. Pin them.</h2>
             <p className="mt-2 text-[1rem] text-accent-ink/85">Install ClientPin and share your first list in minutes.</p>
           </div>
-          <a href={DOWNLOAD} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-2 rounded-full bg-bg px-6 py-3.5 text-[1rem] font-semibold text-accent transition-transform hover:-translate-y-0.5"><IconDownload /> Download the extension</a>
+          <a href={DOWNLOAD} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-2 bg-bg px-6 py-3.5 text-[1rem] font-semibold text-accent transition-transform hover:-translate-y-0.5"><IconDownload /> Download the extension</a>
         </div>
       </section>
 

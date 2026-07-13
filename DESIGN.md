@@ -21,7 +21,14 @@ Same tokens, type, and motifs everywhere. The landing may go **Committed** with 
 
 ## Theme
 
-**Light, warm paper.** Scene: a QA lead and a non-engineer client reviewing bug pins together in normal office light, wanting to read comments and see screenshots clearly. That forces light. But warm, not the cool clinical grey of the old Material build: a faint ivory canvas that reads like drafting paper, so the tool has a point of view instead of defaulting to "safe white."
+**Light, high-contrast editorial.** Scene: a QA lead and a non-engineer client reviewing bug pins together in normal office light, wanting to read comments and see screenshots clearly. That forces light. The treatment is **editorial / magazine**: a stark near-white canvas, near-black ink, definition from **strong hairline rules rather than soft shadows**, oversized tight display type, and coral used sharply. Corners are crisp (radius 1-3px), not soft. One signature depth cue: a hard offset shadow (`.shadow-edge`) that makes hero frames feel printed and pasted on.
+
+## Edges, rules & type (editorial)
+
+- **Corners:** near-sharp. `--radius-*` is globally reduced to 1-3px; true circles (`rounded-full`) are untouched, so pins, dots, and the progress ring stay round.
+- **Definition:** ink hairline rules and full borders, not blur. `--shadow-card` is nearly flat. Use `border`, section `border-t`, and `.ruler` ticks to divide.
+- **Type:** display goes big and tight (`tracking-[-0.03em]`, uppercase for the hero and eyebrows). Mono (JetBrains) carries eyebrows, labels, and coordinates in uppercase.
+- **Signature:** `.shadow-edge` / `.shadow-edge-accent` (a 5px hard offset in ink or coral) on the hero product frame and key CTAs. Sparingly.
 
 ## Color — OKLCH
 

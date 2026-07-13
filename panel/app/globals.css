@@ -2,50 +2,65 @@
 
 /* ── ClientPin — precision drafting-instrument token system (see DESIGN.md) ── */
 @theme {
-  /* Warm near-white neutrals (hue ~80) */
-  --color-bg:        oklch(0.987 0.004 80);
+  /* High-contrast editorial neutrals (hue ~80). Definition comes from ink
+     rules, not soft shadows — so lines are strong and ink is near-black. */
+  --color-bg:        oklch(0.990 0.002 80);
   --color-surface:   oklch(0.998 0.001 80);
-  --color-surface-2: oklch(0.970 0.006 78);
-  --color-line:      oklch(0.912 0.006 78);
-  --color-line-2:    oklch(0.855 0.008 76);
+  --color-surface-2: oklch(0.960 0.004 78);
+  --color-line:      oklch(0.800 0.008 78);   /* crisp hairline           */
+  --color-line-2:    oklch(0.520 0.014 76);   /* strong rule / emphasis   */
 
-  /* Indigo-tinted ink (hue ~275) */
-  --color-ink:       oklch(0.26 0.028 275);
-  --color-ink-dim:   oklch(0.47 0.028 272);
-  --color-ink-mute:  oklch(0.63 0.022 272);
+  /* Near-black indigo ink (hue ~275) */
+  --color-ink:       oklch(0.185 0.022 275);
+  --color-ink-dim:   oklch(0.400 0.026 272);
+  --color-ink-mute:  oklch(0.560 0.022 272);
 
-  /* Coral/vermilion — THE primary: brand, actions, active step, progress, focus */
-  --color-accent:       oklch(0.635 0.190 34);
-  --color-accent-press: oklch(0.565 0.180 34);
+  /* Coral — THE primary, used sharply: brand, actions, active step, focus */
+  --color-accent:       oklch(0.610 0.205 33);
+  --color-accent-press: oklch(0.535 0.190 33);
   --color-accent-ink:   oklch(0.995 0.010 60);
-  --color-accent-soft:  oklch(0.950 0.038 45);
+  --color-accent-soft:  oklch(0.945 0.042 42);
 
   /* Pin — the marker glyph is the accent color */
-  --color-pin:       oklch(0.635 0.190 34);
-  --color-pin-soft:  oklch(0.950 0.038 45);
+  --color-pin:       oklch(0.610 0.205 33);
+  --color-pin-soft:  oklch(0.945 0.042 42);
 
   /* Status triad + soft chip backgrounds */
-  --color-new:           oklch(0.620 0.185 34);
-  --color-new-soft:      oklch(0.950 0.038 42);
-  --color-progress:      oklch(0.520 0.170 262);
-  --color-progress-soft: oklch(0.940 0.045 262);
-  --color-resolved:      oklch(0.520 0.125 155);
-  --color-resolved-soft: oklch(0.935 0.048 150);
+  --color-new:           oklch(0.600 0.200 33);
+  --color-new-soft:      oklch(0.945 0.042 40);
+  --color-progress:      oklch(0.500 0.180 262);
+  --color-progress-soft: oklch(0.935 0.048 262);
+  --color-resolved:      oklch(0.500 0.130 155);
+  --color-resolved-soft: oklch(0.930 0.050 150);
 
-  --color-danger:        oklch(0.545 0.205 25);
+  --color-danger:        oklch(0.535 0.210 25);
 
   /* One unified font system across app + landing */
   --font-sans:    var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
   --font-mono:    var(--font-jb), ui-monospace, "SF Mono", monospace;
   --font-display: var(--font-bricolage), var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+
+  /* Editorial: sharp corners everywhere (rounded-* read these). Circles use
+     rounded-full, which is unaffected, so dots/rings/pins stay round. */
+  --radius-sm:  1px;
+  --radius-md:  2px;
+  --radius-lg:  2px;
+  --radius-xl:  3px;
+  --radius-2xl: 3px;
+  --radius-3xl: 4px;
 }
 
-/* Soft, indigo-tinted elevation (premium, barely-there) */
+/* Editorial elevation — definition comes from ink RULES, not blur.
+   Shadows are near-flat; the signature depth is a hard offset (.shadow-edge). */
 :root {
-  --shadow-card: 0 1px 2px oklch(0.26 0.03 275 / 0.05), 0 8px 24px oklch(0.26 0.03 275 / 0.05);
-  --shadow-bar:  0 1px 2px oklch(0.26 0.03 275 / 0.05);
-  --shadow-lift: 0 2px 6px oklch(0.26 0.03 275 / 0.06), 0 18px 40px oklch(0.26 0.03 275 / 0.10);
+  --shadow-card: 0 1px 2px oklch(0.19 0.02 275 / 0.04);
+  --shadow-bar:  0 1px 0 oklch(0.19 0.02 275 / 0.05);
+  --shadow-lift: 0 2px 3px oklch(0.19 0.02 275 / 0.05), 0 10px 22px oklch(0.19 0.02 275 / 0.07);
 }
+
+/* Signature hard offset — a printed, pasted-on feel. Used on hero frames + CTAs. */
+.shadow-edge { box-shadow: 5px 5px 0 var(--color-ink); }
+.shadow-edge-accent { box-shadow: 5px 5px 0 var(--color-accent); }
 
 html { color-scheme: light; }
 

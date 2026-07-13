@@ -20,7 +20,7 @@ export function Nav() {
           <a href="#features" className="transition-colors hover:text-ink">Features</a>
           <a href="#faq" className="transition-colors hover:text-ink">FAQ</a>
         </nav>
-        <a href="/login" className="rounded-full bg-accent px-4 py-2 text-[0.8125rem] font-medium text-accent-ink shadow-bar transition-colors hover:bg-accent-press">
+        <a href="/login" className="bg-accent px-4 py-2 text-[0.8125rem] font-semibold text-accent-ink transition-colors hover:bg-accent-press">
           Try now
         </a>
       </div>
