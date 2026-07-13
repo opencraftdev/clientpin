@@ -2,37 +2,37 @@
 
 /* ── ClientPin — precision drafting-instrument token system (see DESIGN.md) ── */
 @theme {
-  /* Warm paper neutrals (hue ~85) */
-  --color-bg:        oklch(0.984 0.006 85);
-  --color-surface:   oklch(0.997 0.002 85);
-  --color-surface-2: oklch(0.966 0.008 83);
-  --color-line:      oklch(0.903 0.008 83);
-  --color-line-2:    oklch(0.845 0.010 80);
+  /* Warm near-white neutrals (hue ~80) */
+  --color-bg:        oklch(0.987 0.004 80);
+  --color-surface:   oklch(0.998 0.001 80);
+  --color-surface-2: oklch(0.970 0.006 78);
+  --color-line:      oklch(0.912 0.006 78);
+  --color-line-2:    oklch(0.855 0.008 76);
 
   /* Indigo-tinted ink (hue ~275) */
-  --color-ink:       oklch(0.27 0.030 275);
-  --color-ink-dim:   oklch(0.47 0.030 272);
-  --color-ink-mute:  oklch(0.62 0.024 272);
+  --color-ink:       oklch(0.26 0.028 275);
+  --color-ink-dim:   oklch(0.47 0.028 272);
+  --color-ink-mute:  oklch(0.63 0.022 272);
 
-  /* Cobalt — structure, actions, active nav, focus, links */
-  --color-accent:       oklch(0.50 0.200 262);
-  --color-accent-press: oklch(0.43 0.190 262);
-  --color-accent-ink:   oklch(0.99 0.010 262);
-  --color-accent-soft:  oklch(0.94 0.045 262);
+  /* Coral/vermilion — THE primary: brand, actions, active step, progress, focus */
+  --color-accent:       oklch(0.635 0.190 34);
+  --color-accent-press: oklch(0.565 0.180 34);
+  --color-accent-ink:   oklch(0.995 0.010 60);
+  --color-accent-soft:  oklch(0.950 0.038 45);
 
-  /* Vermilion — the pin / marker / attention */
-  --color-pin:       oklch(0.605 0.200 32);
-  --color-pin-soft:  oklch(0.945 0.050 45);
+  /* Pin — the marker glyph is the accent color */
+  --color-pin:       oklch(0.635 0.190 34);
+  --color-pin-soft:  oklch(0.950 0.038 45);
 
   /* Status triad + soft chip backgrounds */
-  --color-new:           oklch(0.575 0.190 33);
-  --color-new-soft:      oklch(0.945 0.050 42);
-  --color-progress:      oklch(0.50 0.180 262);
+  --color-new:           oklch(0.620 0.185 34);
+  --color-new-soft:      oklch(0.950 0.038 42);
+  --color-progress:      oklch(0.520 0.170 262);
   --color-progress-soft: oklch(0.940 0.045 262);
-  --color-resolved:      oklch(0.50 0.130 155);
-  --color-resolved-soft: oklch(0.935 0.050 150);
+  --color-resolved:      oklch(0.520 0.125 155);
+  --color-resolved-soft: oklch(0.935 0.048 150);
 
-  --color-danger:        oklch(0.53 0.210 25);
+  --color-danger:        oklch(0.545 0.205 25);
 
   /* One unified font system across app + landing */
   --font-sans:    var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
@@ -40,11 +40,11 @@
   --font-display: var(--font-bricolage), var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Warm, indigo-tinted elevation */
+/* Soft, indigo-tinted elevation (premium, barely-there) */
 :root {
-  --shadow-card: 0 1px 2px oklch(0.27 0.03 275 / 0.07), 0 6px 16px oklch(0.27 0.03 275 / 0.05);
-  --shadow-bar:  0 1px 2px oklch(0.27 0.03 275 / 0.06);
-  --shadow-lift: 0 2px 4px oklch(0.27 0.03 275 / 0.08), 0 14px 32px oklch(0.27 0.03 275 / 0.10);
+  --shadow-card: 0 1px 2px oklch(0.26 0.03 275 / 0.05), 0 8px 24px oklch(0.26 0.03 275 / 0.05);
+  --shadow-bar:  0 1px 2px oklch(0.26 0.03 275 / 0.05);
+  --shadow-lift: 0 2px 6px oklch(0.26 0.03 275 / 0.06), 0 18px 40px oklch(0.26 0.03 275 / 0.10);
 }
 
 html { color-scheme: light; }
