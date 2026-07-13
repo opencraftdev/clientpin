@@ -53,8 +53,8 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
       <header className="border-b border-line bg-surface/80 backdrop-blur-sm">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
           <Logo size={22} />
-          <span className="font-code inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-[0.7rem] text-ink-mute">
-            <span className="h-1.5 w-1.5 rounded-full bg-resolved" /> {isOwner ? 'Owner view' : 'Client view'}
+          <span className="font-code inline-flex items-center gap-2 border border-line bg-surface px-3 py-1 text-[0.65rem] uppercase tracking-wide text-ink-mute">
+            <span className="h-1.5 w-1.5 bg-resolved" /> {isOwner ? 'Owner view' : 'Client view'}
           </span>
         </div>
       </header>
@@ -67,7 +67,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
             <section id="basic" className="reg-marks rounded-2xl border border-line bg-surface p-7 shadow-card">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <span className="font-code rounded-full bg-accent-soft px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wide text-accent">ClientPin project</span>
+                  <span className="font-code inline-block border border-accent bg-accent-soft px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide text-accent">ClientPin project</span>
                   <h1 className="font-display mt-3 text-[2rem] font-bold leading-none tracking-[-0.02em] text-ink">{project.name}</h1>
                   {project.description && <p className="mt-3 max-w-xl text-[0.9375rem] leading-relaxed text-ink-dim">{project.description}</p>}
                   <p className="font-code mt-3 text-[0.72rem] text-ink-mute">Created {new Date(project.created_at).toLocaleDateString()}</p>
@@ -93,9 +93,9 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
             <section id="qa" className="mt-6 rounded-2xl border border-line bg-surface p-7 shadow-card">
               <div className="flex items-center justify-between gap-4">
                 <h2 className="flex items-center gap-2 text-[1.125rem] font-bold text-ink">
-                  QA pins <span className="grid h-6 min-w-6 place-items-center rounded-full bg-surface-2 px-1.5 text-[0.75rem] font-semibold text-ink-dim">{tags.length}</span>
+                  QA pins <span className="font-code grid h-6 min-w-6 place-items-center border border-line px-1.5 text-[0.72rem] font-semibold text-ink-dim">{tags.length}</span>
                 </h2>
-                {tags.length > 0 && <CopyButton text={buildBulkPrompt(tags as Tag[])} label="Copy AI Fix (all)" className="ring-accent rounded-full bg-accent px-4 py-2 text-[0.8125rem] font-semibold text-accent-ink transition-colors hover:bg-accent-press" />}
+                {tags.length > 0 && <CopyButton text={buildBulkPrompt(tags as Tag[])} label="Copy AI Fix (all)" className="ring-accent bg-accent px-4 py-2 text-[0.8125rem] font-semibold text-accent-ink transition-colors hover:bg-accent-press" />}
               </div>
               {tags.length ? (
                 <ul className="mt-5 flex flex-col divide-y divide-line">
@@ -113,7 +113,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
                         <div className="mt-2.5 flex items-center gap-3">
                           {isOwner
                             ? <StatusSelect slug={slug} tagId={t.id} value={t.status} />
-                            : <span style={{ background: STATUS_META[t.status].soft, color: STATUS_META[t.status].color }} className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[0.75rem] font-medium"><span className="h-1.5 w-1.5 rounded-full" style={{ background: STATUS_META[t.status].color }} />{STATUS_META[t.status].label}</span>
+                            : <span style={{ background: STATUS_META[t.status].soft, color: STATUS_META[t.status].color, borderColor: STATUS_META[t.status].color }} className="font-code inline-flex items-center gap-1.5 border px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide"><span className="h-1.5 w-1.5" style={{ background: STATUS_META[t.status].color }} />{STATUS_META[t.status].label}</span>
                           }
                           <CopyButton text={buildPrompt(t)} className="ring-accent rounded-lg px-2.5 py-1 text-[0.8125rem] font-semibold text-accent transition-colors hover:bg-accent-soft" />
                         </div>
@@ -128,7 +128,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
                   </span>
                   <p className="mt-3 text-[0.9375rem] font-semibold text-ink">No QA pins yet</p>
                   <p className="mx-auto mt-1 max-w-xs text-[0.8125rem] leading-relaxed text-ink-dim">Install the ClientPin extension, paste the connect code, and tag components on your site.</p>
-                  <a href={EXT_DOWNLOAD} target="_blank" rel="noreferrer" className="mt-5 inline-block rounded-full bg-accent px-5 py-2 text-[0.8125rem] font-semibold text-accent-ink transition-colors hover:bg-accent-press">Install the extension</a>
+                  <a href={EXT_DOWNLOAD} target="_blank" rel="noreferrer" className="shadow-edge mt-5 inline-block bg-accent px-5 py-2.5 text-[0.8125rem] font-semibold text-accent-ink transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">Install the extension</a>
                 </div>
               )}
             </section>

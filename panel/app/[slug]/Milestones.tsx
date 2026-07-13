@@ -14,12 +14,12 @@ export function Milestones({ milestones, isOwner, slug }: { milestones: Mileston
               <span className="text-[0.9375rem] font-semibold text-ink">{m.name}</span>
               {isOwner && slug
                 ? <OwnerMilestoneSelect slug={slug} index={i} value={m.status} />
-                : <span className="rounded-full bg-accent-soft px-2 py-0.5 text-[0.6875rem] font-medium text-accent">{LABEL[m.status]}</span>}
+                : <span className="font-code border border-accent bg-accent-soft px-1.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-wide text-accent">{LABEL[m.status]}</span>}
             </div>
             <div className="mt-3 flex items-center">
               {STEPS.map((s, si) => (
                 <div key={s} className="flex flex-1 items-center last:flex-none">
-                  <span className={`grid h-6 w-6 place-items-center rounded-full text-[0.7rem] font-semibold ${si <= idx ? 'bg-accent text-accent-ink' : 'bg-surface-2 text-ink-mute'}`}>{si < idx ? '✓' : si + 1}</span>
+                  <span className={`font-code grid h-6 w-6 place-items-center text-[0.7rem] font-semibold ${si <= idx ? 'bg-accent text-accent-ink' : 'border border-line bg-surface-2 text-ink-mute'}`}>{si < idx ? '✓' : si + 1}</span>
                   {si < STEPS.length - 1 && <span className={`h-0.5 flex-1 ${si < idx ? 'bg-accent' : 'bg-line'}`} />}
                 </div>
               ))}
