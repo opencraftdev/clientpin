@@ -1,6 +1,9 @@
 import { Nav } from './_landing/Nav'
 import { Splash } from './_landing/Splash'
 import { Community } from './_landing/Community'
+import { createClient } from '@/lib/supabase/server'
+import { profileOf } from '@/lib/user'
+import { githubStars } from '@/lib/github'
 import { Reveal } from './_landing/Reveal'
 import { Pin, Logo, ListPreview, IconDownload, IconCheck, IconClock } from './_landing/parts'
 import { TagDemo, Pipeline, LocateShot, FixShot, ShareShot } from './_landing/Demos'
@@ -31,11 +34,14 @@ function Showcase({ eyebrow, title, body, visual, flip }: { eyebrow: string; tit
   )
 }
 
-export default function Landing() {
+export default async function Landing() {
+  const supabase = await createClient()
+  const [{ data: { user } }, stars] = await Promise.all([supabase.auth.getUser(), githubStars()])
+  const profile = profileOf(user)
   return (
     <div id="top" className="font-body min-h-screen overflow-x-hidden bg-bg text-ink">
       <Splash />
-      <Nav />
+      <Nav profile={profile} stars={stars} />
 
       {/* Hero — the product does the talking */}
       <section className="relative overflow-hidden">

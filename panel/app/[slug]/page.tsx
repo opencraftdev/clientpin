@@ -6,7 +6,8 @@ import { buildPrompt, buildBulkPrompt } from '@/lib/prompt'
 import type { Tag } from '@/lib/types'
 import { STATUS_META } from '@/lib/types'
 import { PasswordGate } from './PasswordGate'
-import { Logo } from '../_landing/parts'
+import { Logo, Avatar } from '../_landing/parts'
+import { profileOf, type Profile } from '@/lib/user'
 import { InstallSteps, DownloadButton } from '../_landing/InstallSteps'
 import { Sidebar } from './Sidebar'
 import { Milestones } from './Milestones'
@@ -15,7 +16,7 @@ import { CopyButton } from './CopyButton'
 
 function pathOf(u: string): string { try { return new URL(u).pathname } catch { return u } }
 
-async function loadDashboard(slug: string): Promise<{ dash: Dashboard; isOwner: boolean } | null> {
+async function loadDashboard(slug: string): Promise<{ dash: Dashboard; isOwner: boolean; me: Profile | null } | null> {
   // Owner path: authenticated read gives the view_token, then reuse get_dashboard.
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -23,14 +24,14 @@ async function loadDashboard(slug: string): Promise<{ dash: Dashboard; isOwner: 
     const { data: owned } = await supabase.from('projects').select('view_token').eq('slug', slug).eq('owner', user.id).maybeSingle()
     if (owned?.view_token) {
       const { data } = await sb.rpc('get_dashboard', { p_slug: slug, p_token: owned.view_token })
-      if (data) return { dash: data as Dashboard, isOwner: true }
+      if (data) return { dash: data as Dashboard, isOwner: true, me: profileOf(user) }
     }
   }
   // Viewer path: token cookie.
   const token = (await cookies()).get(`pv-${slug}`)?.value
   if (token) {
     const { data } = await sb.rpc('get_dashboard', { p_slug: slug, p_token: token })
-    if (data) return { dash: data as Dashboard, isOwner: false }
+    if (data) return { dash: data as Dashboard, isOwner: false, me: null }
   }
   return null
 }
@@ -43,7 +44,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
   // a project exists. notFound() is intentionally not used here.
   if (!result) return <PasswordGate slug={slug} />
 
-  const { dash, isOwner } = result
+  const { dash, isOwner, me } = result
   const { project, tags } = dash
   const pct = progressPct(project.milestones)
   return (
@@ -53,15 +54,22 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
           <Logo size={22} />
           <div className="flex items-center gap-3">
-            {isOwner && (
+            {isOwner ? (
               <>
                 <a href="/projects" className="ring-accent text-[0.8125rem] font-medium text-ink-dim transition-colors hover:text-ink">Projects</a>
                 <a href="/onboarding" className="ring-accent border border-line bg-surface px-3 py-1.5 text-[0.8125rem] font-semibold text-ink transition-colors hover:bg-surface-2">+ New project</a>
+                {me && (
+                  <span className="inline-flex items-center gap-2 border border-line bg-surface py-1 pl-1 pr-3">
+                    <Avatar src={me.avatarUrl} name={me.name} size={24} />
+                    <span className="max-w-[10rem] truncate text-[0.8125rem] font-medium text-ink">{me.name}</span>
+                  </span>
+                )}
               </>
+            ) : (
+              <span className="font-code inline-flex items-center gap-2 border border-line bg-surface px-3 py-1 text-[0.65rem] uppercase tracking-wide text-ink-mute">
+                <span className="h-1.5 w-1.5 bg-resolved" /> Client view
+              </span>
             )}
-            <span className="font-code inline-flex items-center gap-2 border border-line bg-surface px-3 py-1 text-[0.65rem] uppercase tracking-wide text-ink-mute">
-              <span className="h-1.5 w-1.5 bg-resolved" /> {isOwner ? 'Owner view' : 'Client view'}
-            </span>
           </div>
         </div>
       </header>
