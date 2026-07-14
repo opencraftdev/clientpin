@@ -1,9 +1,12 @@
+import type { CSSProperties } from 'react'
 import { Reveal } from './Reveal'
 
 const DISCORD_URL = 'https://discord.gg/aAGFsrHs6z'
 
+type Post = { name: string; handle: string; text: string }
+
 // Illustrative testimonials about ClientPin, shown as a social-proof wall.
-const POSTS: { name: string; handle: string; text: string }[] = [
+const POSTS: Post[] = [
   { name: 'Maya Okonkwo', handle: 'maya_builds', text: "Stopped typing 'the button on the left, no the other one' in Slack. I just pin it now." },
   { name: 'Devon Ruiz', handle: 'devonqa', text: 'My clients actually use the link. No logins, no Loom, just click and comment.' },
   { name: 'Priya Nair', handle: 'frontend_fox', text: 'The AI-fix prompt drops into Cursor with the selector already filled. Genuinely wild.' },
@@ -12,6 +15,17 @@ const POSTS: { name: string; handle: string; text: string }[] = [
   { name: 'Nour Haddad', handle: 'nourships', text: 'Lists auto-delete after a week, so my QA board never turns into a graveyard.' },
   { name: 'Tom Whitfield', handle: 'tomdesigns', text: 'Set it up in a minute and shared it with a client who had never touched a dev tool.' },
   { name: 'Alex Moreau', handle: 'agencyalex', text: 'Triage is just dragging pins New, In progress, Resolved. My PM finally gets it.' },
+  { name: 'Sana Iqbal', handle: 'sana_ships', text: 'Handed a client the link mid-call and they were tagging bugs 30 seconds later.' },
+  { name: 'Bruno Mensah', handle: 'brunocodes', text: 'Screenshot plus selector on every pin means I never reproduce a bug twice.' },
+  { name: 'Ivy Larsson', handle: 'ivydesigns', text: 'Finally a QA tool my designers and my devs both open without complaining.' },
+  { name: 'Diego Marin', handle: 'diegoqa', text: 'One link replaced our whole messy bug board. Nobody misses it.' },
+]
+
+// Three self-contained columns so each renders alone as breakpoints drop.
+const COLS: Post[][] = [
+  [POSTS[0], POSTS[3], POSTS[6], POSTS[9]],
+  [POSTS[1], POSTS[4], POSTS[7], POSTS[10]],
+  [POSTS[2], POSTS[5], POSTS[8], POSTS[11]],
 ]
 
 function XMark({ size = 15 }: { size?: number }) {
@@ -30,6 +44,40 @@ function DiscordMark({ size = 20 }: { size?: number }) {
   )
 }
 
+function Card({ p, dupe }: { p: Post; dupe?: boolean }) {
+  return (
+    <figure aria-hidden={dupe} className={`mb-4 border border-line bg-surface p-5 shadow-card ${dupe ? 'dupe' : ''}`}>
+      <div className="flex items-start justify-between gap-3">
+        <figcaption className="flex items-center gap-2.5">
+          <span className="font-display grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line bg-surface-2 text-[0.8125rem] font-bold text-ink-dim">{p.name[0]}</span>
+          <span className="leading-tight">
+            <span className="block text-[0.875rem] font-semibold text-ink">{p.name}</span>
+            <span className="font-code block text-[0.72rem] text-ink-mute">@{p.handle}</span>
+          </span>
+        </figcaption>
+        <span className="mt-0.5 shrink-0 text-ink-mute"><XMark /></span>
+      </div>
+      <blockquote className="mt-3.5 text-[0.9375rem] leading-relaxed text-ink-dim">{p.text}</blockquote>
+    </figure>
+  )
+}
+
+function Column({ items, dur, reverse, className }: { items: Post[]; dur: string; reverse?: boolean; className?: string }) {
+  return (
+    <div className={`marquee-col min-w-0 flex-1 ${className ?? ''}`}>
+      <div className={`marquee-track flex flex-col ${reverse ? 'reverse' : ''}`} style={{ '--dur': dur } as CSSProperties}>
+        {items.map((p) => <Card key={p.handle} p={p} />)}
+        {items.map((p) => <Card key={p.handle + '-dup'} p={p} dupe />)}
+      </div>
+    </div>
+  )
+}
+
+const fadeMask: CSSProperties = {
+  WebkitMaskImage: 'linear-gradient(to bottom, transparent 0, #000 9%, #000 91%, transparent 100%)',
+  maskImage: 'linear-gradient(to bottom, transparent 0, #000 9%, #000 91%, transparent 100%)',
+}
+
 export function Community() {
   return (
     <section id="community" className="scroll-mt-16 border-t border-line bg-bg">
@@ -43,25 +91,11 @@ export function Community() {
           </a>
         </Reveal>
 
-        {/* Testimonial wall — masonry so cards keep their natural height */}
-        <div className="mt-16 gap-4 sm:columns-2 lg:columns-3">
-          {POSTS.map((p, i) => (
-            <Reveal key={p.handle} delay={(i % 3) * 70}>
-              <figure className="mb-4 break-inside-avoid border border-line bg-surface p-5 shadow-card transition-colors hover:border-line-2">
-                <div className="flex items-start justify-between gap-3">
-                  <figcaption className="flex items-center gap-2.5">
-                    <span className="font-display grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line bg-surface-2 text-[0.8125rem] font-bold text-ink-dim">{p.name[0]}</span>
-                    <span className="leading-tight">
-                      <span className="block text-[0.875rem] font-semibold text-ink">{p.name}</span>
-                      <span className="font-code block text-[0.72rem] text-ink-mute">@{p.handle}</span>
-                    </span>
-                  </figcaption>
-                  <span className="mt-0.5 shrink-0 text-ink-mute"><XMark /></span>
-                </div>
-                <blockquote className="mt-3.5 text-[0.9375rem] leading-relaxed text-ink-dim">{p.text}</blockquote>
-              </figure>
-            </Reveal>
-          ))}
+        {/* Auto-scrolling testimonial columns (hover to pause) */}
+        <div className="marquee-wall relative mt-16 flex gap-4 overflow-hidden" style={fadeMask}>
+          <Column items={COLS[0]} dur="46s" />
+          <Column items={COLS[1]} dur="55s" reverse className="hidden sm:block" />
+          <Column items={COLS[2]} dur="40s" className="hidden lg:block" />
         </div>
       </div>
     </section>
