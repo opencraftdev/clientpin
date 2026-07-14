@@ -1,8 +1,10 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { Logo } from './parts'
+import { Logo, Avatar, GitHubMark } from './parts'
+import { formatStars, GITHUB_URL } from '@/lib/github'
+import type { Profile } from '@/lib/user'
 
-export function Nav() {
+export function Nav({ profile, stars }: { profile: Profile | null; stars: number | null }) {
   const [scrolled, setScrolled] = useState(false)
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12)
@@ -21,9 +23,21 @@ export function Nav() {
           <a href="#faq" className="transition-colors hover:text-ink">FAQ</a>
           <a href="#community" className="transition-colors hover:text-ink">Community</a>
         </nav>
-        <a href="/login" className="bg-accent px-4 py-2 text-[0.8125rem] font-semibold text-accent-ink transition-colors hover:bg-accent-press">
-          Try now
-        </a>
+        <div className="flex items-center gap-2.5">
+          <a href={GITHUB_URL} target="_blank" rel="noreferrer noopener" aria-label="Star ClientPin on GitHub"
+            className="inline-flex items-center gap-1.5 border border-line px-2.5 py-1.5 text-[0.8125rem] font-medium text-ink-dim transition-colors hover:bg-surface-2 hover:text-ink">
+            <GitHubMark size={16} />
+            {stars != null && <span className="font-code tabular-nums">{formatStars(stars)}</span>}
+          </a>
+          {profile ? (
+            <>
+              <a href="/projects" className="bg-accent px-4 py-2 text-[0.8125rem] font-semibold text-accent-ink transition-colors hover:bg-accent-press">Dashboard</a>
+              <a href="/projects" aria-label={`${profile.name}, open dashboard`} className="ring-accent"><Avatar src={profile.avatarUrl} name={profile.name} size={32} /></a>
+            </>
+          ) : (
+            <a href="/login" className="bg-accent px-4 py-2 text-[0.8125rem] font-semibold text-accent-ink transition-colors hover:bg-accent-press">Try now</a>
+          )}
+        </div>
       </div>
     </header>
   )
