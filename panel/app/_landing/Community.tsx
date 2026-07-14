@@ -2,17 +2,25 @@ import { Reveal } from './Reveal'
 
 const DISCORD_URL = 'https://discord.gg/aAGFsrHs6z'
 
-// Short testimonials about ClientPin shown as a comment wall.
-const COMMENTS: { handle: string; text: string }[] = [
-  { handle: 'maya_builds', text: "Stopped typing 'the button on the left, no the other one' in Slack. I just pin it now." },
-  { handle: 'devonqa', text: 'My clients actually use the link — no logins, no Loom, just click and comment.' },
-  { handle: 'frontend_fox', text: 'The AI-fix prompt drops into Cursor with the selector already filled. Wild.' },
-  { handle: 'studio_ren', text: 'Went from 40 back-and-forth emails to one shareable list per release.' },
-  { handle: 'kaipixels', text: 'Pinning the exact element beats a blurry cropped screenshot every single time.' },
-  { handle: 'nourships', text: 'Lists auto-delete after a week, so my QA board never turns into a graveyard.' },
-  { handle: 'tomdesigns', text: 'Set it up in a minute and shared it with a client who has never touched a dev tool.' },
-  { handle: 'agencyalex', text: 'Triage is just moving pins New → In progress → Resolved. My PM finally gets it.' },
+// Illustrative testimonials about ClientPin, shown as a social-proof wall.
+const POSTS: { name: string; handle: string; text: string }[] = [
+  { name: 'Maya Okonkwo', handle: 'maya_builds', text: "Stopped typing 'the button on the left, no the other one' in Slack. I just pin it now." },
+  { name: 'Devon Ruiz', handle: 'devonqa', text: 'My clients actually use the link. No logins, no Loom, just click and comment.' },
+  { name: 'Priya Nair', handle: 'frontend_fox', text: 'The AI-fix prompt drops into Cursor with the selector already filled. Genuinely wild.' },
+  { name: 'Ren Aoki', handle: 'studio_ren', text: 'Went from 40 back-and-forth emails to one shareable list per release.' },
+  { name: 'Kai Bergstrom', handle: 'kaipixels', text: 'Pinning the exact element beats a blurry cropped screenshot every single time.' },
+  { name: 'Nour Haddad', handle: 'nourships', text: 'Lists auto-delete after a week, so my QA board never turns into a graveyard.' },
+  { name: 'Tom Whitfield', handle: 'tomdesigns', text: 'Set it up in a minute and shared it with a client who had never touched a dev tool.' },
+  { name: 'Alex Moreau', handle: 'agencyalex', text: 'Triage is just dragging pins New, In progress, Resolved. My PM finally gets it.' },
 ]
+
+function XMark({ size = 15 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  )
+}
 
 function DiscordMark({ size = 20 }: { size?: number }) {
   return (
@@ -24,26 +32,33 @@ function DiscordMark({ size = 20 }: { size?: number }) {
 
 export function Community() {
   return (
-    <section id="community" className="scroll-mt-16 bg-ink text-bg">
+    <section id="community" className="scroll-mt-16 border-t border-line bg-bg">
       <div className="mx-auto max-w-6xl px-6 py-24">
-        <Reveal className="text-center">
+        <Reveal className="mx-auto max-w-2xl text-center">
           <p className="font-code text-[0.8rem] font-medium text-accent">COMMUNITY</p>
-          <h2 className="mx-auto mt-2 max-w-2xl font-display font-bold leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Join the community</h2>
-          <p className="mx-auto mt-3 max-w-xl text-[1rem] leading-relaxed text-bg/70">See what teams building with ClientPin are saying, ask questions, and shape what ships next.</p>
-          <a href={DISCORD_URL} target="_blank" rel="noreferrer noopener" className="mt-7 inline-flex items-center gap-2.5 bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink transition-transform hover:-translate-y-0.5">
+          <h2 className="mt-2 font-display font-bold leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Join the community</h2>
+          <p className="mx-auto mt-3 max-w-xl text-[1.0625rem] leading-relaxed text-ink-dim">Discover what teams shipping with ClientPin are saying. Ask questions, trade workflows, and help shape what lands next.</p>
+          <a href={DISCORD_URL} target="_blank" rel="noreferrer noopener" className="shadow-edge mt-8 inline-flex items-center gap-2.5 bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none">
             <DiscordMark /> Join us on Discord
           </a>
         </Reveal>
 
-        <div className="mt-14 gap-4 [column-fill:_balance] sm:columns-2 lg:columns-3">
-          {COMMENTS.map((c, i) => (
-            <Reveal key={c.handle} delay={(i % 3) * 60}>
-              <figure className="mb-4 break-inside-avoid border border-bg/15 bg-bg/[0.04] p-5">
-                <figcaption className="flex items-center gap-2.5">
-                  <span className="font-display grid h-8 w-8 shrink-0 place-items-center rounded-full bg-accent text-[0.8125rem] font-bold text-accent-ink">{c.handle[0].toUpperCase()}</span>
-                  <span className="font-code text-[0.8125rem] text-bg/80">@{c.handle}</span>
-                </figcaption>
-                <blockquote className="mt-3 text-[0.9375rem] leading-relaxed text-bg/90">{c.text}</blockquote>
+        {/* Testimonial wall — masonry so cards keep their natural height */}
+        <div className="mt-16 gap-4 sm:columns-2 lg:columns-3">
+          {POSTS.map((p, i) => (
+            <Reveal key={p.handle} delay={(i % 3) * 70}>
+              <figure className="mb-4 break-inside-avoid border border-line bg-surface p-5 shadow-card transition-colors hover:border-line-2">
+                <div className="flex items-start justify-between gap-3">
+                  <figcaption className="flex items-center gap-2.5">
+                    <span className="font-display grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line bg-surface-2 text-[0.8125rem] font-bold text-ink-dim">{p.name[0]}</span>
+                    <span className="leading-tight">
+                      <span className="block text-[0.875rem] font-semibold text-ink">{p.name}</span>
+                      <span className="font-code block text-[0.72rem] text-ink-mute">@{p.handle}</span>
+                    </span>
+                  </figcaption>
+                  <span className="mt-0.5 shrink-0 text-ink-mute"><XMark /></span>
+                </div>
+                <blockquote className="mt-3.5 text-[0.9375rem] leading-relaxed text-ink-dim">{p.text}</blockquote>
               </figure>
             </Reveal>
           ))}
