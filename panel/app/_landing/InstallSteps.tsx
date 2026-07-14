@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { IconDownload } from './parts'
 
-export const DOWNLOAD_URL = 'https://drive.google.com/uc?export=download&id=1XHm9djpq5ZNtRk7Z-SxFeykEQgx6xr8n'
+export const DOWNLOAD_URL = 'https://drive.google.com/uc?export=download&id=13jwqR0QIDrC4shvwrP7lJhHTa5RTzaan'
 
 const STEPS: ReactNode[] = [
   <>Download the <code className="font-code">.zip</code> and unzip it. Keep the folder, deleting it removes the extension.</>,
