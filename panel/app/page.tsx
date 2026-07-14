@@ -39,6 +39,11 @@ export default async function Landing() {
   const supabase = await createClient()
   const [{ data: { user } }, stars] = await Promise.all([supabase.auth.getUser(), githubStars()])
   const profile = profileOf(user)
+  // Logged-in visitors already have an account, so the CTA invites them to
+  // create a project instead of signing up.
+  const cta = profile
+    ? { href: '/onboarding', label: 'Start your project' }
+    : { href: '/login', label: "Try now, it's free" }
   return (
     <div id="top" className="font-body min-h-screen overflow-x-hidden bg-bg text-ink">
       <Splash />
@@ -60,7 +65,7 @@ export default async function Landing() {
             Turn on tag mode, click the exact element on any live site, and leave a comment. Every pin becomes a screenshot, a status, and an AI-fix prompt, shared as one link.
           </p>
           <div className="rise mt-9 flex flex-wrap items-center justify-center gap-3" style={{ animationDelay: '240ms' }}>
-            <a href="/login" className="shadow-edge inline-flex items-center gap-2 bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none">Try now, it&apos;s free</a>
+            <a href={cta.href} className="shadow-edge inline-flex items-center gap-2 bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none">{cta.label}</a>
             <a href="#how" className="border border-ink bg-surface px-5 py-3 text-[0.9375rem] font-semibold text-ink transition-colors hover:bg-ink hover:text-bg">See how it works</a>
           </div>
           <div className="rise mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[0.8125rem] text-ink-mute" style={{ animationDelay: '300ms' }}>
@@ -134,7 +139,7 @@ export default async function Landing() {
             <h2 className="mt-2 font-display font-bold leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Try ClientPin free.</h2>
             <p className="mt-4 max-w-md text-[1rem] leading-relaxed text-ink-dim">Create a project, share one link, and start pinning issues on any live site. No credit card, and your clients never make an account.</p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
-              <a href="/login" className="shadow-edge inline-flex items-center gap-2 bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none">Try now, it&apos;s free</a>
+              <a href={cta.href} className="shadow-edge inline-flex items-center gap-2 bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none">{cta.label}</a>
               <a href="#how" className="border border-ink bg-surface px-5 py-3 text-[0.9375rem] font-semibold text-ink transition-colors hover:bg-ink hover:text-bg">See how it works</a>
             </div>
             <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-[0.8125rem] text-ink-mute">
@@ -186,7 +191,7 @@ export default async function Landing() {
             <p className="mt-2 text-[1rem] text-accent-ink/85">Create your first project and share a list in minutes.</p>
           </div>
           <div className="flex shrink-0 flex-col items-start gap-2 md:items-end">
-            <a href="/login" className="inline-flex items-center gap-2 bg-bg px-6 py-3.5 text-[1rem] font-semibold text-accent transition-transform hover:-translate-y-0.5">Try now, it&apos;s free →</a>
+            <a href={cta.href} className="inline-flex items-center gap-2 bg-bg px-6 py-3.5 text-[1rem] font-semibold text-accent transition-transform hover:-translate-y-0.5">{cta.label} →</a>
             <a href={DOWNLOAD_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-[0.8125rem] font-medium text-accent-ink/80 underline-offset-4 transition-colors hover:text-accent-ink hover:underline"><IconDownload /> or download the extension</a>
           </div>
         </div>

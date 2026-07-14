@@ -23,7 +23,7 @@ export default async function Projects() {
     <div className="grid-paper min-h-screen">
       <header className="border-b border-line bg-surface/80 backdrop-blur-sm">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
-          <Logo size={22} />
+          <a href="/" aria-label="ClientPin home"><Logo size={22} /></a>
           <div className="flex items-center gap-3">
             {user.email && <span className="font-code hidden text-[0.72rem] text-ink-mute sm:inline">{user.email}</span>}
             <form action={signOut}><button className="ring-accent border border-line px-3 py-1.5 text-[0.8125rem] font-medium text-ink-dim transition-colors hover:bg-surface-2 hover:text-ink">Sign out</button></form>

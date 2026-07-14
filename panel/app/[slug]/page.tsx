@@ -52,7 +52,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
       {/* Slim brand bar */}
       <header className="border-b border-line bg-surface/80 backdrop-blur-sm">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
-          <Logo size={22} />
+          <a href="/" aria-label="ClientPin home"><Logo size={22} /></a>
           <div className="flex items-center gap-3">
             {isOwner ? (
               <>
