@@ -1,4 +1,4 @@
-export const GITHUB_REPO = 'opencraftdev/qa-admin-panel'
+export const GITHUB_REPO = 'opencraftdev/clientpin'
 export const GITHUB_URL = `https://github.com/${GITHUB_REPO}`
 
 export function formatStars(n: number): string {
