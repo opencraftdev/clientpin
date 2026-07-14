@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 import { Reveal } from './Reveal'
 
-const DISCORD_URL = 'https://discord.gg/aAGFsrHs6z'
+const DISCORD_URL = 'https://discord.gg/97sFed5zVC'
 
 type Post = { name: string; handle: string; text: string }
 
