@@ -22,11 +22,20 @@ export function Popup() {
         <span className="qa-mark">C</span>
         <div><div className="qa-title">ClientPin</div><div className="qa-sub">{active ? `Connected: ${active.name}` : 'Element detector'}</div></div>
       </header>
-      <label className="qa-field"><span className="qa-label">Connect code</span>
-        <input className="qa-input" value={code} onChange={(e) => setCode(e.target.value)} placeholder="Paste the code from your dashboard" spellCheck={false} /></label>
-      {err && <div className="qa-saved show" style={{ color: 'var(--danger, #c0392b)' }}>{err}</div>}
-      <button className="qa-btn" onClick={connect} disabled={busy}>{busy ? 'Connecting…' : active ? 'Reconnect' : 'Connect'}</button>
-      {active && <div className="qa-saved show">Ready. Use "Tag mode" on your site.</div>}
+      {active ? (
+        <div className="qa-saved show">Connected. Use “Tag mode” on your site.</div>
+      ) : (
+        <>
+          <p className="qa-hint">Open your ClientPin list and click <b>Connect</b> in Basic info. No code to copy.</p>
+          <details className="qa-more">
+            <summary>Paste a connect code instead</summary>
+            <label className="qa-field"><span className="qa-label">Connect code</span>
+              <input className="qa-input" value={code} onChange={(e) => setCode(e.target.value)} placeholder="Paste the code from your dashboard" spellCheck={false} /></label>
+            {err && <div className="qa-saved show" style={{ color: 'var(--danger, #c0392b)' }}>{err}</div>}
+            <button className="qa-btn" onClick={connect} disabled={busy}>{busy ? 'Connecting…' : 'Connect'}</button>
+          </details>
+        </>
+      )}
     </div>
   )
 }
