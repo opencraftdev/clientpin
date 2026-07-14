@@ -1,20 +1,19 @@
 'use client'
 import { useState, useTransition } from 'react'
-import { createProject, type Milestone } from './actions'
+import { createProject } from './actions'
 import { CopyField } from './CopyField'
 import { Logo } from '../_landing/parts'
 
 const field = 'ring-accent w-full rounded-xl border border-line bg-surface px-3.5 py-2.5 text-[0.875rem] transition-colors focus:border-accent focus:outline-none'
 const labelText = 'text-[0.72rem] font-semibold uppercase tracking-wide text-ink-dim'
 
-// module-scope counter; deterministic 'm0' for initial SSR row, unique ids after.
-let seq = 0
-const nextId = () => `m${++seq}`
-type MilestoneRow = Milestone & { id: string }
+// Links are optional, but a filled one must be a real URL. Accept scheme-less
+// domains (acme.store) by prefixing https://; reject bare words like "test".
+const normLink = (v: string) => { const s = v.trim(); return s ? (/^https?:\/\//i.test(s) ? s : `https://${s}`) : '' }
+const linkOk = (v: string) => { const s = v.trim(); if (!s) return true; try { return new URL(normLink(s)).hostname.includes('.') } catch { return false } }
 
 const STEPS = [
   { key: 'project', label: 'Project', title: 'Name your project', desc: 'What are we building? A clear name and a line of context for whoever opens the link.' },
-  { key: 'milestones', label: 'Milestones', title: 'Add milestones', desc: 'Optional. The phases clients can track. You can change these any time from the dashboard.' },
   { key: 'links', label: 'Links', title: 'Link the work', desc: 'Optional. Point to the live site and the repo so everything sits in one place.' },
   { key: 'access', label: 'Access', title: 'Set a view password', desc: 'Viewers open the public link and enter this password. No accounts, ever.' },
 ] as const
@@ -68,26 +67,26 @@ export function OnboardingWizard({ email }: { email?: string }) {
   const [maxReached, setMaxReached] = useState(0)
   const [name, setName] = useState(''); const [desc, setDesc] = useState('')
   const [github, setGithub] = useState(''); const [site, setSite] = useState(''); const [pw, setPw] = useState('')
-  const [milestones, setMilestones] = useState<MilestoneRow[]>([{ id: 'm0', name: '', status: 'waiting' }])
   const [pending, start] = useTransition()
   const [result, setResult] = useState<{ slug: string; project_key: string } | null>(null)
   const [err, setErr] = useState('')
 
-  const canContinue = step === 0 ? name.trim().length > 0 : step === 3 ? pw.trim().length > 0 : true
+  const last = STEPS.length - 1
+  const githubOk = linkOk(github), siteOk = linkOk(site)
+  const canContinue = step === 0 ? name.trim().length > 0 : step === 1 ? githubOk && siteOk : step === last ? pw.trim().length > 0 : true
   const go = (i: number) => { setErr(''); setStep(i); setMaxReached((m) => Math.max(m, i)) }
 
   const submit = () => {
     setErr('')
     if (!name.trim() || !pw.trim()) { setErr('A project name and view password are required.'); return }
-    const ms = milestones.filter((m) => m.name.trim()).map(({ name, status }) => ({ name, status }))
     start(async () => {
-      try { setResult(await createProject({ name: name.trim(), description: desc.trim(), github_link: github.trim(), site_url: site.trim(), milestones: ms, view_password: pw })) }
+      try { setResult(await createProject({ name: name.trim(), description: desc.trim(), github_link: normLink(github), site_url: normLink(site), milestones: [], view_password: pw })) }
       catch (e) { setErr((e as Error).message) }
     })
   }
 
   const next = () => {
-    if (step < 3) go(step + 1)
+    if (step < last) go(step + 1)
     else submit()
   }
 
@@ -151,32 +150,17 @@ export function OnboardingWizard({ email }: { email?: string }) {
             )}
 
             {step === 1 && (
-              <div className="flex flex-col gap-2.5">
-                {milestones.map((m, i) => (
-                  <div key={m.id} className="flex gap-2">
-                    <input className={field} value={m.name} placeholder={`Milestone ${i + 1}`}
-                      onChange={(e) => setMilestones(milestones.map((x) => x.id === m.id ? { ...x, name: e.target.value } : x))} />
-                    <select className="ring-accent rounded-xl border border-line bg-surface px-2 text-[0.8125rem]" value={m.status}
-                      onChange={(e) => setMilestones(milestones.map((x) => x.id === m.id ? { ...x, status: e.target.value as Milestone['status'] } : x))}>
-                      <option value="waiting">Waiting</option><option value="in_progress">In progress</option><option value="done">Done</option>
-                    </select>
-                    <button type="button" className="ring-accent px-2 text-ink-mute transition-colors hover:text-ink" aria-label="Remove milestone" onClick={() => setMilestones(milestones.length > 1 ? milestones.filter((x) => x.id !== m.id) : milestones)}>×</button>
-                  </div>
-                ))}
-                <button type="button" className="w-fit text-[0.8125rem] font-semibold text-accent transition-colors hover:text-accent-press" onClick={() => setMilestones([...milestones, { id: nextId(), name: '', status: 'waiting' }])}>+ Add milestone</button>
+              <div className="flex flex-col gap-5">
+                <label className="flex flex-col gap-1.5"><span className={labelText}>GitHub link</span>
+                  <input type="url" inputMode="url" className={field} style={!githubOk ? { borderColor: 'var(--color-danger)' } : undefined} value={github} onChange={(e) => setGithub(e.target.value)} placeholder="https://github.com/..." />
+                  {!githubOk && <span className="text-[0.75rem]" style={{ color: 'var(--color-danger)' }}>Enter a valid URL, e.g. https://github.com/acme/store</span>}</label>
+                <label className="flex flex-col gap-1.5"><span className={labelText}>Site URL</span>
+                  <input type="url" inputMode="url" className={field} style={!siteOk ? { borderColor: 'var(--color-danger)' } : undefined} value={site} onChange={(e) => setSite(e.target.value)} placeholder="https://acme.store" />
+                  {!siteOk && <span className="text-[0.75rem]" style={{ color: 'var(--color-danger)' }}>Enter a valid URL, e.g. https://acme.store</span>}</label>
               </div>
             )}
 
             {step === 2 && (
-              <div className="flex flex-col gap-5">
-                <label className="flex flex-col gap-1.5"><span className={labelText}>GitHub link</span>
-                  <input className={field} value={github} onChange={(e) => setGithub(e.target.value)} placeholder="https://github.com/..." /></label>
-                <label className="flex flex-col gap-1.5"><span className={labelText}>Site URL</span>
-                  <input className={field} value={site} onChange={(e) => setSite(e.target.value)} placeholder="https://acme.store" /></label>
-              </div>
-            )}
-
-            {step === 3 && (
               <label className="flex flex-col gap-1.5"><span className={labelText}>View password *</span>
                 <input autoFocus className={field} type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Clients enter this to view the link"
                   onKeyDown={(e) => { if (e.key === 'Enter' && canContinue && !pending) submit() }} />
@@ -193,7 +177,7 @@ export function OnboardingWizard({ email }: { email?: string }) {
               className="ring-accent grid h-11 w-11 place-items-center border border-ink bg-surface text-ink transition-colors hover:bg-ink hover:text-bg disabled:invisible" aria-label="Back">‹</button>
             <button type="button" onClick={next} disabled={!canContinue || pending}
               className="ring-accent inline-flex items-center gap-2 bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink transition-colors hover:bg-accent-press disabled:cursor-not-allowed disabled:opacity-45">
-              {step < 3 ? 'Continue →' : pending ? 'Creating…' : 'Create project'}
+              {step < last ? 'Continue →' : pending ? 'Creating…' : 'Create project'}
             </button>
           </div>
         </div>

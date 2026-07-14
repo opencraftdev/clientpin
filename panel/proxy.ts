@@ -11,10 +11,11 @@ export async function proxy(req: NextRequest) {
     } }
   )
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user && req.nextUrl.pathname.startsWith('/onboarding')) {
+  const p = req.nextUrl.pathname
+  if (!user && (p.startsWith('/onboarding') || p.startsWith('/projects'))) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
   return res
 }
 
-export const config = { matcher: ['/onboarding/:path*'] }
+export const config = { matcher: ['/onboarding/:path*', '/projects/:path*'] }

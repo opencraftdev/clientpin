@@ -8,5 +8,6 @@ export async function GET(request: Request) {
     const supabase = await createClient()
     await supabase.auth.exchangeCodeForSession(code)
   }
-  return NextResponse.redirect(`${origin}/onboarding`)
+  // Land on the project list; it forwards first-time users to onboarding.
+  return NextResponse.redirect(`${origin}/projects`)
 }
