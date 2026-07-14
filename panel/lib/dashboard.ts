@@ -4,6 +4,7 @@ export type Milestone = { name: string; status: 'waiting' | 'in_progress' | 'don
 export type DashboardProject = {
   name: string; description: string | null; github_link: string | null
   site_url: string | null; slug: string; milestones: Milestone[]; created_at: string
+  project_key: string
 }
 export type Dashboard = { project: DashboardProject; tags: Tag[] }
 
