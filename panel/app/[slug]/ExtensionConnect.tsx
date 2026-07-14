@@ -14,18 +14,24 @@ export function ExtensionConnect({ projectKey, slug, name }: { projectKey: strin
   const [err, setErr] = useState('')
 
   // Detect on mount: ping, wait for a pong, else assume not installed.
+  // Detect on mount. The content script may attach its listener slightly after
+  // us (or before), so we both listen for its proactive "hello" and re-ping a
+  // few times until we hear back, then give up.
   useEffect(() => {
     let settled = false
     const onMsg = (e: MessageEvent) => {
       const d = e.data
-      if (e.source !== window || !d || d.source !== 'clientpin-ext' || d.type !== 'pong') return
+      if (e.source !== window || !d || d.source !== 'clientpin-ext') return
+      if (d.type !== 'pong' && d.type !== 'hello') return
       settled = true
       setState(d.activeSlug === slug ? 'connected' : 'present')
     }
     window.addEventListener('message', onMsg)
-    window.postMessage({ source: 'clientpin-page', type: 'ping' }, '*')
-    const t = setTimeout(() => { if (!settled) setState('absent') }, 700)
-    return () => { window.removeEventListener('message', onMsg); clearTimeout(t) }
+    const ping = () => window.postMessage({ source: 'clientpin-page', type: 'ping' }, '*')
+    ping()
+    const iv = setInterval(() => (settled ? clearInterval(iv) : ping()), 250)
+    const t = setTimeout(() => { clearInterval(iv); if (!settled) setState('absent') }, 2500)
+    return () => { window.removeEventListener('message', onMsg); clearInterval(iv); clearTimeout(t) }
   }, [slug])
 
   const connect = () => {
