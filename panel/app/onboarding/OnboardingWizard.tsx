@@ -100,10 +100,9 @@ export function OnboardingWizard({ email }: { email?: string }) {
             <span className="grid h-9 w-9 place-items-center rounded-full bg-resolved-soft text-resolved"><Check /></span>
             <h2 className="font-display text-[1.5rem] font-bold tracking-tight text-ink">Project created</h2>
           </div>
-          <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-dim">Share the link (with the password) and give the connect code to whoever installs the extension.</p>
+          <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-dim">Share the link and its password with whoever needs it. They install the extension, open the link, and click Connect. No code to copy.</p>
           <div className="mt-6 flex flex-col gap-4">
             <CopyField label="Public link" value={`${base}/${result.slug}`} />
-            <CopyField label="Connect code (for the extension)" value={result.project_key} />
           </div>
           <a href={`/${result.slug}`} className="ring-accent mt-6 flex w-full items-center justify-center rounded-xl bg-accent px-4 py-3 text-[0.9375rem] font-semibold text-accent-ink shadow-bar transition-colors hover:bg-accent-press">Open the dashboard →</a>
         </div>

@@ -8,12 +8,12 @@ import { STATUS_META } from '@/lib/types'
 import { PasswordGate } from './PasswordGate'
 import { Logo, Avatar } from '../_landing/parts'
 import { profileOf, type Profile } from '@/lib/user'
-import { InstallSteps, DownloadButton } from '../_landing/InstallSteps'
 import { Sidebar } from './Sidebar'
-import { ExtensionConnect } from './ExtensionConnect'
+import { QAEmptyState } from './QAEmptyState'
 import { Milestones } from './Milestones'
 import { StatusSelect } from './StatusSelect'
 import { CopyButton } from './CopyButton'
+import { DeleteTagButton } from './DeleteTagButton'
 
 function pathOf(u: string): string { try { return new URL(u).pathname } catch { return u } }
 
@@ -94,7 +94,6 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
                 </div>
               </div>
               <div className="mt-7"><Milestones milestones={project.milestones} isOwner={isOwner} slug={slug} /></div>
-              <ExtensionConnect projectKey={project.project_key} slug={project.slug} name={project.name} />
               {(project.site_url || project.github_link) && (
                 <div className="mt-7 border-t border-line pt-5">
                   <h2 className="font-code text-[0.7rem] font-semibold uppercase tracking-wide text-ink-dim">Build &amp; Test</h2>
@@ -133,26 +132,14 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
                             : <span style={{ background: STATUS_META[t.status].soft, color: STATUS_META[t.status].color, borderColor: STATUS_META[t.status].color }} className="font-code inline-flex items-center gap-1.5 border px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wide"><span className="h-1.5 w-1.5" style={{ background: STATUS_META[t.status].color }} />{STATUS_META[t.status].label}</span>
                           }
                           <CopyButton text={buildPrompt(t)} className="ring-accent rounded-lg px-2.5 py-1 text-[0.8125rem] font-semibold text-accent transition-colors hover:bg-accent-soft" />
+                          {isOwner && <DeleteTagButton slug={slug} tagId={t.id} />}
                         </div>
                       </div>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <div className="mt-5 border border-dashed border-line-2 px-6 py-10">
-                  <div className="text-center">
-                    <span className="mx-auto text-pin" style={{ display: 'inline-block' }}>
-                      <svg width="26" height="34" viewBox="0 0 24 32" aria-hidden><path d="M12 0C5.4 0 0 5.4 0 12c0 8.5 12 20 12 20s12-11.5 12-20C24 5.4 18.6 0 12 0z" fill="currentColor" /><circle cx="12" cy="12" r="4.4" fill="var(--color-surface)" /></svg>
-                    </span>
-                    <p className="mt-3 text-[0.9375rem] font-semibold text-ink">No QA pins yet</p>
-                    <p className="mx-auto mt-1 max-w-sm text-[0.8125rem] leading-relaxed text-ink-dim">Haven&apos;t installed the extension yet? It takes about a minute, works in any Chromium browser (Chrome, Edge, Brave, Arc), and is not on the Web Store yet, so you install it directly.</p>
-                    <div className="mt-5 flex justify-center"><DownloadButton /></div>
-                  </div>
-                  <div className="mx-auto mt-8 max-w-md">
-                    <p className="font-code mb-3 text-[0.65rem] font-semibold uppercase tracking-wide text-ink-mute">Then, in your browser</p>
-                    <InstallSteps />
-                  </div>
-                </div>
+                <QAEmptyState projectKey={project.project_key} slug={project.slug} name={project.name} />
               )}
             </section>
           </div>

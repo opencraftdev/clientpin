@@ -19,7 +19,12 @@ export function Popup() {
   return (
     <div className="qa-popup">
       <header className="qa-head">
-        <span className="qa-mark">C</span>
+        <span className="qa-mark">
+          <svg viewBox="0 0 32 32" aria-hidden>
+            <path d="M16 7c-3.4 0-6.2 2.7-6.2 6.1 0 4.4 6.2 10 6.2 10s6.2-5.6 6.2-10C22.2 9.7 19.4 7 16 7z" fill="currentColor" />
+            <circle cx="16" cy="13" r="2.5" fill="var(--accent)" />
+          </svg>
+        </span>
         <div><div className="qa-title">ClientPin</div><div className="qa-sub">{active ? `Connected: ${active.name}` : 'Element detector'}</div></div>
       </header>
       {active ? (

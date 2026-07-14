@@ -14,6 +14,13 @@ export async function setStatus(slug: string, tagId: string, status: string) {
   revalidatePath(`/${slug}`)
 }
 
+export async function deleteTag(slug: string, tagId: string) {
+  const supabase = await createServer()
+  const { error } = await supabase.rpc('delete_tag', { p_tag_id: tagId })
+  if (error) throw new Error(error.message)
+  revalidatePath(`/${slug}`)
+}
+
 export async function setMilestoneStatus(slug: string, index: number, status: Milestone['status']) {
   const supabase = await createServer()
   const { data: { user } } = await supabase.auth.getUser()

@@ -8,7 +8,7 @@ import { githubStars } from '@/lib/github'
 import { Reveal } from './_landing/Reveal'
 import { Pin, Logo, ListPreview, IconDownload, IconCheck, IconClock } from './_landing/parts'
 import { TagDemo, Pipeline, LocateShot, FixShot, ShareShot } from './_landing/Demos'
-import { InstallSteps, DownloadButton, DOWNLOAD_URL } from './_landing/InstallSteps'
+import { InstallSteps, DOWNLOAD_URL } from './_landing/InstallSteps'
 import type { ReactNode } from 'react'
 
 const FAQ: [string, string][] = [
@@ -153,8 +153,7 @@ export default async function Landing() {
               <p className="font-code text-[0.7rem] font-semibold uppercase tracking-wide text-ink-mute">The tool</p>
               <h3 className="font-display mt-1 text-[1.15rem] font-bold tracking-[-0.01em] text-ink">A one-time browser extension</h3>
               <p className="mt-2 text-[0.875rem] leading-relaxed text-ink-dim">ClientPin runs as a lightweight Chromium extension you load once — that&apos;s how you tag elements. Your projects and lists live on the web. Not on the Web Store yet, so you load the build directly (about a minute).</p>
-              <div className="mt-5"><DownloadButton label="Download extension (.zip)" /></div>
-              <details className="group mt-4 border-t border-line pt-4">
+              <details className="group mt-5 border-t border-line pt-4">
                 <summary className="font-code flex cursor-pointer list-none items-center justify-between text-[0.7rem] font-semibold uppercase tracking-wide text-ink-dim transition-colors hover:text-ink">Install steps <span className="text-ink-mute transition-transform group-open:rotate-45">+</span></summary>
                 <div className="mt-4"><InstallSteps /></div>
               </details>
