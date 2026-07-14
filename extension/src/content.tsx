@@ -1,8 +1,30 @@
 import { generateAnchor, findElement } from './anchor'
-import { createTag, getTags, getTag, uploadScreenshot } from './supabase'
-import { getActive } from './projects'
+import { createTag, getTags, getTag, uploadScreenshot, connectProject } from './supabase'
+import { getActive, addProject } from './projects'
 import { cropRect } from './crop'
 import './overlay.css'
+
+// ---- panel handshake: detect + auto-connect (no manual code paste) ----
+// The dashboard page pings to detect the extension, then posts the project_key
+// to connect. connectProject validates the key against the DB, so only a real
+// key (already held by an unlocked viewer) can bind this browser to a project.
+const EXT_VERSION = '0.1.0'
+window.addEventListener('message', async (e: MessageEvent) => {
+  const d = e.data
+  if (e.source !== window || !d || d.source !== 'clientpin-page') return
+  if (d.type === 'ping') {
+    const active = await getActive()
+    window.postMessage({ source: 'clientpin-ext', type: 'pong', version: EXT_VERSION, activeSlug: active?.slug ?? null }, '*')
+  } else if (d.type === 'connect' && d.projectKey) {
+    try {
+      const p = await connectProject(String(d.projectKey))
+      await addProject(p)
+      window.postMessage({ source: 'clientpin-ext', type: 'connected', ok: true, slug: p.slug }, '*')
+    } catch (err) {
+      window.postMessage({ source: 'clientpin-ext', type: 'connected', ok: false, error: (err as Error).message }, '*')
+    }
+  }
+})
 
 // ---- pins for the active project ----
 async function loadPins() {

@@ -10,6 +10,7 @@ import { Logo, Avatar } from '../_landing/parts'
 import { profileOf, type Profile } from '@/lib/user'
 import { InstallSteps, DownloadButton } from '../_landing/InstallSteps'
 import { Sidebar } from './Sidebar'
+import { ExtensionConnect } from './ExtensionConnect'
 import { Milestones } from './Milestones'
 import { StatusSelect } from './StatusSelect'
 import { CopyButton } from './CopyButton'
@@ -93,6 +94,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
                 </div>
               </div>
               <div className="mt-7"><Milestones milestones={project.milestones} isOwner={isOwner} slug={slug} /></div>
+              <ExtensionConnect projectKey={project.project_key} slug={project.slug} name={project.name} />
               {(project.site_url || project.github_link) && (
                 <div className="mt-7 border-t border-line pt-5">
                   <h2 className="font-code text-[0.7rem] font-semibold uppercase tracking-wide text-ink-dim">Build &amp; Test</h2>
