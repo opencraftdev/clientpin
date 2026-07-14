@@ -1,4 +1,6 @@
 import { Nav } from './_landing/Nav'
+import { Splash } from './_landing/Splash'
+import { Community } from './_landing/Community'
 import { Reveal } from './_landing/Reveal'
 import { Pin, Logo, ListPreview, IconDownload, IconCheck, IconClock } from './_landing/parts'
 import { TagDemo, Pipeline, LocateShot, FixShot, ShareShot } from './_landing/Demos'
@@ -32,6 +34,7 @@ function Showcase({ eyebrow, title, body, visual, flip }: { eyebrow: string; tit
 export default function Landing() {
   return (
     <div id="top" className="font-body min-h-screen overflow-x-hidden bg-bg text-ink">
+      <Splash />
       <Nav />
 
       {/* Hero — the product does the talking */}
@@ -115,18 +118,34 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Install */}
+      {/* Get started — lead with trying it; the extension is just the tool */}
       <section id="install" className="scroll-mt-16 border-t border-line">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-14 px-6 py-24 lg:grid-cols-[1fr_1.1fr]">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-14 px-6 py-24 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <Reveal>
-            <p className="font-code text-[0.8rem] font-medium text-accent">INSTALL</p>
-            <h2 className="mt-2 font-display font-bold leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Add ClientPin to your browser.</h2>
-            <p className="mt-4 max-w-sm text-[1rem] leading-relaxed text-ink-dim">Not on the Chrome Web Store yet, so you install the build directly. It takes about a minute and works in any Chromium browser.</p>
-            <div className="mt-7"><DownloadButton /></div>
-            <p className="mt-3 text-[0.8125rem] text-ink-mute">Keep the unzipped folder. Deleting it removes the extension.</p>
+            <p className="font-code text-[0.8rem] font-medium text-accent">GET STARTED</p>
+            <h2 className="mt-2 font-display font-bold leading-tight tracking-[-0.02em]" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>Try ClientPin free.</h2>
+            <p className="mt-4 max-w-md text-[1rem] leading-relaxed text-ink-dim">Create a project, share one link, and start pinning issues on any live site. No credit card, and your clients never make an account.</p>
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <a href="/login" className="shadow-edge inline-flex items-center gap-2 bg-accent px-6 py-3 text-[0.9375rem] font-semibold text-accent-ink transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none">Try now, it&apos;s free</a>
+              <a href="#how" className="border border-ink bg-surface px-5 py-3 text-[0.9375rem] font-semibold text-ink transition-colors hover:bg-ink hover:text-bg">See how it works</a>
+            </div>
+            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-[0.8125rem] text-ink-mute">
+              {['Free', 'No account for viewers', 'Works in Chrome, Edge, Brave'].map((t) => (
+                <span key={t} className="inline-flex items-center gap-1.5"><span className="text-accent"><IconCheck /></span> {t}</span>
+              ))}
+            </div>
           </Reveal>
           <Reveal delay={100}>
-            <InstallSteps />
+            <div className="border border-line bg-surface-2 p-6">
+              <p className="font-code text-[0.7rem] font-semibold uppercase tracking-wide text-ink-mute">The tool</p>
+              <h3 className="font-display mt-1 text-[1.15rem] font-bold tracking-[-0.01em] text-ink">A one-time browser extension</h3>
+              <p className="mt-2 text-[0.875rem] leading-relaxed text-ink-dim">ClientPin runs as a lightweight Chromium extension you load once — that&apos;s how you tag elements. Your projects and lists live on the web. Not on the Web Store yet, so you load the build directly (about a minute).</p>
+              <div className="mt-5"><DownloadButton label="Download extension (.zip)" /></div>
+              <details className="group mt-4 border-t border-line pt-4">
+                <summary className="font-code flex cursor-pointer list-none items-center justify-between text-[0.7rem] font-semibold uppercase tracking-wide text-ink-dim transition-colors hover:text-ink">Install steps <span className="text-ink-mute transition-transform group-open:rotate-45">+</span></summary>
+                <div className="mt-4"><InstallSteps /></div>
+              </details>
+            </div>
           </Reveal>
         </div>
       </section>
@@ -148,14 +167,20 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Community */}
+      <Community />
+
       {/* Final CTA — the one deliberate coral drench */}
       <section className="bg-accent">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-16 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="font-display font-bold leading-tight tracking-[-0.02em] text-accent-ink" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)' }}>Stop describing bugs. Pin them.</h2>
-            <p className="mt-2 text-[1rem] text-accent-ink/85">Install ClientPin and share your first list in minutes.</p>
+            <p className="mt-2 text-[1rem] text-accent-ink/85">Create your first project and share a list in minutes.</p>
           </div>
-          <a href={DOWNLOAD_URL} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-2 bg-bg px-6 py-3.5 text-[1rem] font-semibold text-accent transition-transform hover:-translate-y-0.5"><IconDownload /> Download the extension</a>
+          <div className="flex shrink-0 flex-col items-start gap-2 md:items-end">
+            <a href="/login" className="inline-flex items-center gap-2 bg-bg px-6 py-3.5 text-[1rem] font-semibold text-accent transition-transform hover:-translate-y-0.5">Try now, it&apos;s free →</a>
+            <a href={DOWNLOAD_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-[0.8125rem] font-medium text-accent-ink/80 underline-offset-4 transition-colors hover:text-accent-ink hover:underline"><IconDownload /> or download the extension</a>
+          </div>
         </div>
       </section>
 
@@ -167,6 +192,7 @@ export default function Landing() {
           <a href="#features" className="transition-colors hover:text-ink-dim">Features</a>
           <a href="#install" className="transition-colors hover:text-ink-dim">Install</a>
           <a href="#faq" className="transition-colors hover:text-ink-dim">FAQ</a>
+          <a href="#community" className="transition-colors hover:text-ink-dim">Community</a>
           <span>Lists expire after 7 days.</span>
         </div>
       </footer>
