@@ -8,13 +8,18 @@ import './overlay.css'
 // The dashboard page pings to detect the extension, then posts the project_key
 // to connect. connectProject validates the key against the DB, so only a real
 // key (already held by an unlocked viewer) can bind this browser to a project.
+// We answer pings AND announce on load, so detection works whichever side
+// (page listener vs content script) is ready first.
 const EXT_VERSION = '0.1.0'
+async function announce(type: 'pong' | 'hello') {
+  const active = await getActive()
+  window.postMessage({ source: 'clientpin-ext', type, version: EXT_VERSION, activeSlug: active?.slug ?? null }, '*')
+}
 window.addEventListener('message', async (e: MessageEvent) => {
   const d = e.data
   if (e.source !== window || !d || d.source !== 'clientpin-page') return
   if (d.type === 'ping') {
-    const active = await getActive()
-    window.postMessage({ source: 'clientpin-ext', type: 'pong', version: EXT_VERSION, activeSlug: active?.slug ?? null }, '*')
+    announce('pong')
   } else if (d.type === 'connect' && d.projectKey) {
     try {
       const p = await connectProject(String(d.projectKey))
@@ -25,6 +30,8 @@ window.addEventListener('message', async (e: MessageEvent) => {
     }
   }
 })
+// In case the page's listener was already attached before we loaded.
+announce('hello')
 
 // ---- pins for the active project ----
 async function loadPins() {
