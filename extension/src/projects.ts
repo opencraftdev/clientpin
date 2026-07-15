@@ -1,4 +1,4 @@
-export type Project = { name: string; slug: string; project_key: string }
+export type Project = { name: string; slug: string; project_key: string; site_url?: string | null }
 
 export async function listProjects(): Promise<Project[]> {
   const { projects } = await chrome.storage.local.get('projects')

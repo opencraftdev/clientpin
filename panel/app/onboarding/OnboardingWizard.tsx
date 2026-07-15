@@ -14,7 +14,7 @@ const linkOk = (v: string) => { const s = v.trim(); if (!s) return true; try { r
 
 const STEPS = [
   { key: 'project', label: 'Project', title: 'Name your project', desc: 'What are we building? A clear name and a line of context for whoever opens the link.' },
-  { key: 'links', label: 'Links', title: 'Link the work', desc: 'Optional. Point to the live site and the repo so everything sits in one place.' },
+  { key: 'links', label: 'Links', title: 'Link the work', desc: 'Where is the site you are testing? Tag mode runs only on this site. The repo is optional.' },
   { key: 'access', label: 'Access', title: 'Set a view password', desc: 'Viewers open the public link and enter this password. No accounts, ever.' },
 ] as const
 
@@ -72,13 +72,14 @@ export function OnboardingWizard({ email }: { email?: string }) {
   const [err, setErr] = useState('')
 
   const last = STEPS.length - 1
-  const githubOk = linkOk(github), siteOk = linkOk(site)
+  const githubOk = linkOk(github)
+  const siteOk = site.trim().length > 0 && linkOk(site) // site is required
   const canContinue = step === 0 ? name.trim().length > 0 : step === 1 ? githubOk && siteOk : step === last ? pw.trim().length > 0 : true
   const go = (i: number) => { setErr(''); setStep(i); setMaxReached((m) => Math.max(m, i)) }
 
   const submit = () => {
     setErr('')
-    if (!name.trim() || !pw.trim()) { setErr('A project name and view password are required.'); return }
+    if (!name.trim() || !site.trim() || !pw.trim()) { setErr('A project name, site URL, and view password are required.'); return }
     start(async () => {
       try { setResult(await createProject({ name: name.trim(), description: desc.trim(), github_link: normLink(github), site_url: normLink(site), milestones: [], view_password: pw })) }
       catch (e) { setErr((e as Error).message) }
@@ -153,9 +154,11 @@ export function OnboardingWizard({ email }: { email?: string }) {
                 <label className="flex flex-col gap-1.5"><span className={labelText}>GitHub link</span>
                   <input type="url" inputMode="url" className={field} style={!githubOk ? { borderColor: 'var(--color-danger)' } : undefined} value={github} onChange={(e) => setGithub(e.target.value)} placeholder="https://github.com/..." />
                   {!githubOk && <span className="text-[0.75rem]" style={{ color: 'var(--color-danger)' }}>Enter a valid URL, e.g. https://github.com/acme/store</span>}</label>
-                <label className="flex flex-col gap-1.5"><span className={labelText}>Site URL</span>
-                  <input type="url" inputMode="url" className={field} style={!siteOk ? { borderColor: 'var(--color-danger)' } : undefined} value={site} onChange={(e) => setSite(e.target.value)} placeholder="https://acme.store" />
-                  {!siteOk && <span className="text-[0.75rem]" style={{ color: 'var(--color-danger)' }}>Enter a valid URL, e.g. https://acme.store</span>}</label>
+                <label className="flex flex-col gap-1.5"><span className={labelText}>Site URL *</span>
+                  <input type="url" inputMode="url" className={field} style={site.trim() && !linkOk(site) ? { borderColor: 'var(--color-danger)' } : undefined} value={site} onChange={(e) => setSite(e.target.value)} placeholder="https://acme.store" />
+                  {site.trim() && !linkOk(site)
+                    ? <span className="text-[0.75rem]" style={{ color: 'var(--color-danger)' }}>Enter a valid URL, e.g. https://acme.store</span>
+                    : <span className="text-[0.75rem] text-ink-mute">Required. Tag mode runs only on this site.</span>}</label>
               </div>
             )}
 

@@ -7,6 +7,9 @@ import { DeleteProjectButton } from './DeleteProjectButton'
 
 type Row = { slug: string; name: string; description: string | null; created_at: string; milestones: Milestone[] | null }
 
+// Progress % is hidden for now (onboarding skips milestones). Flip to restore.
+const SHOW_PROGRESS = false
+
 export default async function Projects() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -51,7 +54,7 @@ export default async function Projects() {
                   <div className="mt-auto flex items-center justify-between pt-5">
                     <span className="font-code text-[0.7rem] text-ink-mute">Created {new Date(p.created_at).toLocaleDateString()}</span>
                     <span className="flex items-center gap-3">
-                      <span className="font-display text-[1.25rem] font-extrabold leading-none text-accent">{pct}<span className="text-[0.8rem]">%</span></span>
+                      {SHOW_PROGRESS && <span className="font-display text-[1.25rem] font-extrabold leading-none text-accent">{pct}<span className="text-[0.8rem]">%</span></span>}
                       <span className="text-[0.8125rem] font-semibold text-accent transition-transform group-hover:translate-x-0.5">Open →</span>
                     </span>
                   </div>

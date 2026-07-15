@@ -11,7 +11,7 @@ export async function connectProject(projectKey: string) {
   if (error) throw new Error(error.message)
   const row = Array.isArray(data) ? data[0] : data
   if (!row) throw new Error('Project not found')
-  return { name: row.name as string, slug: row.slug as string, project_key: projectKey }
+  return { name: row.name as string, slug: row.slug as string, project_key: projectKey, site_url: (row.site_url ?? null) as string | null }
 }
 
 export async function createTag(
