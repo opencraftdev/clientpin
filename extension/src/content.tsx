@@ -1,6 +1,6 @@
 import { generateAnchor, findElement } from './anchor'
 import { createTag, getTags, getTag, uploadScreenshot, connectProject } from './supabase'
-import { getActive, addProject } from './projects'
+import { getActive, addProject, listProjects, setActive } from './projects'
 import { cropRect } from './crop'
 import './overlay.css'
 
@@ -170,6 +170,22 @@ async function locate() {
 const toolbar = document.createElement('div'); toolbar.className = 'qa-toolbar'
 const btn = document.createElement('button'); btn.className = 'qa-toolbar-btn'; btn.textContent = 'Tag mode'
 btn.onclick = () => (tagging ? exitTagMode() : enterTagMode())
-toolbar.appendChild(btn); document.body.appendChild(toolbar)
-loadPins()
-locate()
+toolbar.appendChild(btn)
+
+// Tag mode only shows on the connected project's registered site. If a project
+// registered for this host exists, activate it. A connected project with no
+// registered site still shows everywhere (can't scope it).
+const hostOf = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
+async function init() {
+  const here = location.hostname.replace(/^www\./, '')
+  const match = (await listProjects()).find((p) => p.site_url && hostOf(p.site_url) === here)
+  let active = await getActive()
+  if (match && match.slug !== active?.slug) { await setActive(match.slug); active = match }
+  const onSite = active ? (active.site_url ? hostOf(active.site_url) === here : true) : false
+  if (onSite) {
+    document.body.appendChild(toolbar)
+    loadPins()
+  }
+  locate()
+}
+init()

@@ -17,6 +17,10 @@ import { DeleteTagButton } from './DeleteTagButton'
 
 function pathOf(u: string): string { try { return new URL(u).pathname } catch { return u } }
 
+// Milestones + progress are hidden for now (onboarding skips milestones).
+// Flip to true to bring them back.
+const SHOW_PROGRESS = false
+
 async function loadDashboard(slug: string): Promise<{ dash: Dashboard; isOwner: boolean; me: Profile | null } | null> {
   // Owner path: authenticated read gives the view_token, then reuse get_dashboard.
   const supabase = await createClient()
@@ -88,12 +92,14 @@ export default async function DashboardPage({ params }: { params: Promise<{ slug
                   {project.description && <p className="mt-3 max-w-xl text-[0.9375rem] leading-relaxed text-ink-dim">{project.description}</p>}
                   <p className="font-code mt-3 text-[0.72rem] text-ink-mute">Created {new Date(project.created_at).toLocaleDateString()}</p>
                 </div>
-                <div className="shrink-0 text-right">
-                  <div className="font-code text-[0.65rem] uppercase tracking-wide text-ink-mute">Progress</div>
-                  <div className="font-display text-[2.75rem] font-extrabold leading-none text-accent">{pct}<span className="text-[1.5rem]">%</span></div>
-                </div>
+                {SHOW_PROGRESS && (
+                  <div className="shrink-0 text-right">
+                    <div className="font-code text-[0.65rem] uppercase tracking-wide text-ink-mute">Progress</div>
+                    <div className="font-display text-[2.75rem] font-extrabold leading-none text-accent">{pct}<span className="text-[1.5rem]">%</span></div>
+                  </div>
+                )}
               </div>
-              <div className="mt-7"><Milestones milestones={project.milestones} isOwner={isOwner} slug={slug} /></div>
+              {SHOW_PROGRESS && <div className="mt-7"><Milestones milestones={project.milestones} isOwner={isOwner} slug={slug} /></div>}
               {(project.site_url || project.github_link) && (
                 <div className="mt-7 border-t border-line pt-5">
                   <h2 className="font-code text-[0.7rem] font-semibold uppercase tracking-wide text-ink-dim">Build &amp; Test</h2>

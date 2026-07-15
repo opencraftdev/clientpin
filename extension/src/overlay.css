@@ -51,12 +51,17 @@ html.qa-tagging, html.qa-tagging * { cursor: crosshair !important; }
   border: 1px solid oklch(0.800 0.008 78); border-radius: 3px;
   box-shadow: 5px 5px 0 oklch(0.185 0.022 275); padding: 10px;
   font: 400 13px 'Hanken Grotesk', system-ui, sans-serif;
+  /* Force light rendering so form controls never follow the host page / OS dark theme. */
+  color-scheme: light;
 }
 .qa-bubble-input {
   width: 100%; min-height: 62px; resize: vertical; box-sizing: border-box;
   border: 1px solid oklch(0.800 0.008 78); border-radius: 2px; padding: 8px;
-  font: inherit; color: inherit; outline: none;
+  font: inherit; outline: none;
+  color-scheme: light;
+  background: oklch(0.998 0.001 80); color: oklch(0.185 0.022 275);
 }
+.qa-bubble-input::placeholder { color: oklch(0.560 0.022 272); opacity: 1; }
 .qa-bubble-input:focus { border-color: oklch(0.610 0.205 33); }
 .qa-bubble-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
 .qa-bubble-row button { border: 0; border-radius: 2px; padding: 6px 12px; font: 600 12.5px 'Hanken Grotesk', system-ui, sans-serif; cursor: pointer; }
